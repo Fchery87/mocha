@@ -20,7 +20,7 @@ The previous prototype branch/path is not present in this checkout and is not bu
 5. **Nothing that needs you can scroll away.** Approvals and questions dock above the composer until answered.
 6. **One signature: the pour.** A line under the top bar fills as a turn progresses, the spinner is a cup filling up, and the terminal's own progress bar mirrors both. Everything else is calm. Nothing moves when idle.
 7. **Quiet by default, detail on demand.** Everything collapses to one line and expands with a key. Nothing is hidden that can't be reached in one keystroke.
-8. **Light means light.** The UI never costs more than the budgets in §12. Idle is 0% CPU and zero redraws.
+8. **Light means light.** The UI never costs more than the budgets in §12. Idle has no periodic repaint/animation timers when nothing changes. CPU is measured, not guaranteed to be mathematically zero.
 
 ---
 
@@ -102,13 +102,13 @@ The `┌─ band ─┐` outlines above only mark where a band is. Bands have no
 - **Headings and inline code are bold `text`, never a color.**
 - **The meaning is never carried by color alone.** Every colored thing also has a glyph or a word (`+38`, `✓`, `needs you`, `▌`).
 - **Contrast:** body text vs. `bg` and vs. `band` is checked to APCA ≥ 75. `muted` is APCA ≥ 45 (metadata only). The accent on `bg` is ≥ 60 in both themes.
-- **Light/dark:** detected with the OSC 11 background query, overridable with `ui.theme = "auto" | "dark" | "light"`.
-- **`ui.background = "terminal"`** skips painting `bg` and uses the terminal's own background. Bands and tints stay.
+- **Light/dark:** explicit settings win. Optional OSC 11 probing is asynchronous with a 100 ms timeout and never delays input readiness. Auto uses dark until detection succeeds.
+- **future `ui.background = "terminal"`** skips painting `bg` and uses the terminal's own background. Bands and tints stay.
 - **Fallbacks:**
   - Color depth is detected (`COLORTERM`, terminfo), falling back to 256 colors, then 16.
   - In 16 colors, bands become reverse video and diff tints are dropped.
   - `NO_COLOR` keeps glyphs, bold, and the band shape (reverse), and nothing else.
-- **Alternate palettes** are swappable with `ui.palette`. Only the accent, `accent2`, `ok`, and `bad` change; the neutrals stay.
+- **Alternate palettes (future concept)** are outside the MVP. A later implementation may make them swappable with `ui.palette`. Only the accent, `accent2`, `ok`, and `bad` change; the neutrals stay.
   - `iris` (violet): it reads close to the popular Catppuccin "Mocha" theme, so it isn't the default.
   - `glacier` (ice blue)
   - `gold` (bright gold)
@@ -456,14 +456,14 @@ A list grouped by what needs you:
 
 ## 8. Responsive behavior
 
-Mocha must be fully usable from a 30 × 12 split pane to a 240-column ultrawide. Verified in the prototype at 164×46, 150×46, 120×40, 100×44, 70×40, 56×40, 48×30, and 44×34, in dark and light.
+MVP required operation targets 80×24 and larger. Smaller sizes collapse decorative chrome and preserve pending decisions, with a resize message if the minimum input/status area cannot fit. Historical prototype size claims are unverified in this checkout; current evidence must come from real binary PTY checks.
 
 | Width | Top bar | Transcript | Tool rows & diffs | Dock | Status & composer | Footer |
 |---|---|---|---|---|---|---|
 | **≥ 140** | Full: path, branch, `48k of 200k`, meter | Transcript + **rail** | Stats inline · 3 diff lines | One row of choices | Cost and time right · model and mode right | All hints |
 | **100–139** | Full | Transcript only (rail via `alt+r`) | Same | One row | Same | All hints |
 | **64–99** | Drops `48k of 200k` below 90 | Same | Same | Choices stack below 72 | Same | `esc` · `shift+tab` · `?` |
-| **< 64** | Path only, `24%` without the meter below 46 | Same | Stats and `⟲` dropped · diffs hidden (`ctrl+o`) | Short label, stacked | Status: seconds + `esc` · composer: no model/mode | Two hints |
+| **< 64** | Path only, `24%` without the meter below 46 | Same | Stats and `⟲` dropped · diffs hidden (`ctrl+o`) | Short label, stacked | Status: active mode + seconds + `esc` · composer may omit model | Two hints |
 
 | Height | Behavior |
 |---|---|
@@ -474,7 +474,7 @@ Mocha must be fully usable from a 30 × 12 split pane to a 240-column ultrawide.
 
 **Rules that make this hold:**
 - **No truncated words.** Long paths truncate in the middle (`src/…/limiter.rs`), never at the end.
-- **Right-pinned items drop first.** When the left and right sides of a row would collide, the right side is dropped, never overlapped.
+- **Right-pinned items drop first.** When the left and right sides of a row would collide, nonessential right-side detail drops without overlap. The active mode and pending-decision meaning remain visible, moving to the status/footer if needed.
 - **Live resize** re-lays out the whole screen in one frame. The scroll position is kept relative to the turn you're reading.
 - **Overlays** have their own breakpoints. Below 60 columns, preview columns disappear and lists go full-width.
 - **Tests:** every component has snapshot tests at widths 30 / 48 / 64 / 100 / 140 / 180 and heights 12 / 24 / 46 (§14).
@@ -520,8 +520,8 @@ All motion shares one ~14 fps clock that runs **only while something is happenin
 - **Color is never the only signal.** Every color has a glyph or word alongside it (§3.1). Bands survive `NO_COLOR` as reverse video.
 - **`NO_COLOR` and `ui.ascii`** are supported.
 - **Reduced motion** (§9).
-- **`ui.screen_reader = true`** switches to the inline layout with no shimmer and no in-place rewrites. Output is append-only plain lines, status changes are announced as text lines, and the dock is announced with its choices.
-- **Contrast targets** are in §3.1, and they're checked in tests for every palette, in both themes.
+- **Future screen-reader mode, outside MVP:** `ui.screen_reader = true` would switch to the inline layout with no shimmer and no in-place rewrites. Output is append-only plain lines, status changes are announced as text lines, and the dock is announced with its choices.
+- **Contrast targets** are in §3.1, and they're checked for Volt dark/light. Additional palettes are future scope.
 - **Everything is reachable by keyboard.** The mouse is optional.
 
 ---
@@ -533,43 +533,40 @@ All motion shares one ~14 fps clock that runs **only while something is happenin
 | Keystroke to paint | ≤ 8 ms p99 |
 | Streaming repaint rate | ≤ 30/s, coalesced |
 | Animation clock | ~14 fps, only while working. 0 when idle. |
-| Idle | 0 repaints, 0% CPU (no timers when nothing animates) |
+| Idle | No periodic repaints/animation timers when nothing changes; record measured CPU |
 | Bytes per streaming frame | Only changed cells. Typically < 400 bytes. |
-| Thin client memory | ≤ 12 MB, including the transcript buffer |
+| Whole-process idle memory | ≤ 12 MB, including the in-process engine and transcript/config state |
 
-- **Alternate screen** with **synchronized output** (DEC mode 2026) around every frame, so GPU terminals never tear.
+- **Alternate screen** uses synchronized output where supported, with a normal rendering fallback. This reduces tearing but does not guarantee every terminal never tears.
 - **Transcript buffer:** Mocha owns scrollback.
   - Rendered lines are cached per block and invalidated only on resize or expand.
   - Only the visible window is laid out, so very long sessions scroll in O(visible).
   - The full history lives in the session log (JSONL), not in memory.
 - **Selection and copy:** Mocha's own selection, written to the clipboard with OSC 52. `shift`+drag uses the terminal's selection.
-- **Painting the canvas:** every cell gets `bg` explicitly, so terminals with transparency or custom backgrounds still look consistent (unless `ui.background = "terminal"`).
+- **Painting the canvas:** every cell gets `bg` explicitly, so terminals with transparency or custom backgrounds still look consistent (unless future `ui.background = "terminal"`).
 - **OSC 9;4** progress mirrors the pour (§4.2). The terminal title is `◒ mocha · <session> · <state>`.
 - **Width-correct text:** Unicode width via a grapheme-aware measure. CJK and emoji are tested in snapshots.
 - **tmux/screen/SSH:**
   - OSC passthrough (hyperlinks, OSC 52, OSC 9;4, images) is detected, with a graceful fallback.
   - No truecolor is assumed inside tmux unless `Tc`/`RGB` is set.
-- **Images:** Kitty / iTerm2 / Sixel when available, otherwise `[image: 1280×720 · ctrl+t to view]`.
+- **Images:** textual attachment identity is required. Kitty, iTerm2 and Sixel rendering are future enhancements, not promised MVP terminal support.
 
 ---
 
 ## 13. Theming and settings
 
 ```toml
+schemaVersion = 1
+revision = 0
+
 [ui]
 layout = "full"         # full | inline
 theme = "auto"          # auto | dark | light
-palette = "volt"        # volt | iris | glacier | gold
-accent = ""             # optional hex override of the palette's accent
-background = "mocha"    # mocha (paint the canvas) | terminal
-rail = "auto"           # auto (≥ 140 cols) | always | never
-focus = false           # start in Focus mode
+palette = "volt"        # only required MVP palette
+rail = "auto"           # auto | always | never
 motion = "full"         # full | reduced
 mouse = true
-ascii = false           # ASCII glyph fallbacks
-diff = "unified"        # unified | split
-wrap = 132              # prose measure
-screen_reader = false
+ascii = false
 ```
 Themes may override only the color tokens in §3.1, never layout, glyphs, or the pour. That keeps Mocha recognizably Mocha.
 
@@ -577,7 +574,7 @@ Themes may override only the color tokens in §3.1, never layout, glyphs, or the
 
 ## 14. Testing the UI
 
-- **Snapshot tests** (`insta`) for every component at widths 30 / 48 / 64 / 100 / 140 / 180 and heights 12 / 24 / 46. Each runs in dark and light for every palette, plus `NO_COLOR`, ASCII, and `ui.background = "terminal"`. The welcome screen and the cup mark have their own snapshots.
+- **Snapshot tests** (`insta`) for every component at widths 30 / 48 / 64 / 100 / 140 / 180 and heights 12 / 24 / 46. MVP runs use Volt dark/light, `NO_COLOR` and ASCII. Extra palettes and terminal-background customization are future scope. The welcome screen and the cup mark have their own snapshots.
 - **vt100 end-to-end tests:** drive the real binary in a PTY and assert screen contents. Cases:
   - streaming
   - the dock flow
@@ -620,3 +617,6 @@ Tab/Shift+Tab navigate within an open picker or dock, taking precedence over the
 Focus mode and Focus summaries remain later work, so their rail and summary choices do not block the MVP. The MVP receipt comes from recorded evidence without a separate paid summarizer. Testing uses the verification plan's 200-chunk/second workload and fixed payload sizes.
 
 The canonical mode names and approval semantics follow the [policy matrix](docs/contracts/tools-and-policy.md#mode-decision-matrix). Unattended shows a persistent mode/scope indicator and returns to idle with an explanation when new approval is needed. It cannot open a waiting approval dock.
+
+
+Untrusted model, file, tool and server text cannot emit raw terminal control sequences. Only Mocha-generated sequences may affect cursor/screen state, title, clipboard or hyperlinks. Escape/render hostile OSC/CSI/control bytes safely, including sequences split across stream chunks and headless terminal text output. JSON output uses proper JSON escaping. Preserve original redacted source history separately from its safe rendered view.

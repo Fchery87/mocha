@@ -1,0 +1,25 @@
+[
+  {
+    "name": "read",
+    "arguments": {
+      "path": "src/main.rs"
+    }
+  },
+  {
+    "name": "bash",
+    "arguments": {
+      "operation": "run",
+      "command": "printf fixture",
+      "background": false
+    }
+  },
+  {
+    "name": "edit",
+    "arguments": {
+      "path": "fixture.txt",
+      "old_text": "a",
+      "new_text": "b",
+      "observation_id": "obs-1"
+    }
+  }
+]

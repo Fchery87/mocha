@@ -1,0 +1,381 @@
+{
+  "schema_version": 1,
+  "scope": "M0\u2013M2 agreed MVP; specifications are not execution evidence",
+  "slices": [
+    {
+      "id": "SLICE-001",
+      "title": "mock walking skeleton and calibration",
+      "milestone": "M0",
+      "blocked_by": [],
+      "requirements": [
+        "FR-001",
+        "FR-022",
+        "NFR-001",
+        "NFR-003",
+        "NFR-004",
+        "NFR-008"
+      ],
+      "spec": "SLICE-001/spec.md",
+      "status": "specified_execution_pending"
+    },
+    {
+      "id": "SLICE-002",
+      "title": "headless turns and durable recovery",
+      "milestone": "M1",
+      "blocked_by": [
+        "SLICE-001"
+      ],
+      "requirements": [
+        "FR-003",
+        "FR-010",
+        "FR-022",
+        "NFR-001",
+        "NFR-002",
+        "NFR-003",
+        "NFR-005",
+        "NFR-007"
+      ],
+      "spec": "SLICE-002/spec.md",
+      "status": "specified_execution_pending"
+    },
+    {
+      "id": "SLICE-003",
+      "title": "provider setup, credentials and Anthropic connection",
+      "milestone": "M1",
+      "blocked_by": [
+        "SLICE-002"
+      ],
+      "requirements": [
+        "FR-006",
+        "FR-007",
+        "FR-020",
+        "FR-022",
+        "NFR-003",
+        "NFR-004",
+        "NFR-007",
+        "NFR-009"
+      ],
+      "spec": "SLICE-003/spec.md",
+      "status": "specified_execution_pending"
+    },
+    {
+      "id": "SLICE-004",
+      "title": "complete provider catalog and four API families",
+      "milestone": "M1",
+      "blocked_by": [
+        "SLICE-003"
+      ],
+      "requirements": [
+        "FR-006",
+        "FR-007",
+        "FR-008",
+        "FR-024",
+        "NFR-003",
+        "NFR-004",
+        "NFR-009"
+      ],
+      "spec": "SLICE-004/spec.md",
+      "status": "specified_execution_pending"
+    },
+    {
+      "id": "SLICE-005",
+      "title": "contained tools with evidence and minimum loop guards",
+      "milestone": "M1",
+      "blocked_by": [
+        "SLICE-002",
+        "SLICE-003",
+        "SLICE-004"
+      ],
+      "requirements": [
+        "FR-002",
+        "FR-003",
+        "FR-004",
+        "FR-005",
+        "FR-011",
+        "FR-012",
+        "FR-013",
+        "FR-020",
+        "NFR-001",
+        "NFR-002",
+        "NFR-005",
+        "NFR-009"
+      ],
+      "spec": "SLICE-005/spec.md",
+      "status": "specified_execution_pending"
+    },
+    {
+      "id": "SLICE-006",
+      "title": "interjection, queued work and loop control",
+      "milestone": "M1",
+      "blocked_by": [
+        "SLICE-005"
+      ],
+      "requirements": [
+        "FR-002",
+        "FR-003",
+        "FR-022",
+        "NFR-002",
+        "NFR-005"
+      ],
+      "spec": "SLICE-006/spec.md",
+      "status": "specified_execution_pending"
+    },
+    {
+      "id": "SLICE-007",
+      "title": "scoped instructions, compaction and bounded context",
+      "milestone": "M1",
+      "blocked_by": [
+        "SLICE-006"
+      ],
+      "requirements": [
+        "FR-009",
+        "FR-017",
+        "FR-007",
+        "NFR-002",
+        "NFR-005",
+        "NFR-007",
+        "NFR-009"
+      ],
+      "spec": "SLICE-007/spec.md",
+      "status": "specified_execution_pending"
+    },
+    {
+      "id": "SLICE-008",
+      "title": "plain terminal daily workflow and M1 qualification",
+      "milestone": "M1",
+      "blocked_by": [
+        "SLICE-007"
+      ],
+      "requirements": [
+        "FR-005",
+        "FR-006",
+        "FR-007",
+        "FR-018",
+        "FR-021",
+        "NFR-001",
+        "NFR-003",
+        "NFR-005",
+        "NFR-008",
+        "NFR-009"
+      ],
+      "spec": "SLICE-008/spec.md",
+      "status": "specified_execution_pending"
+    },
+    {
+      "id": "SLICE-009",
+      "title": "permission modes and action review",
+      "milestone": "M2",
+      "blocked_by": [
+        "SLICE-008"
+      ],
+      "requirements": [
+        "FR-011",
+        "FR-002",
+        "FR-003",
+        "NFR-005",
+        "NFR-006",
+        "NFR-009"
+      ],
+      "spec": "SLICE-009/spec.md",
+      "status": "specified_execution_pending"
+    },
+    {
+      "id": "SLICE-010",
+      "title": "project trust and layered configuration",
+      "milestone": "M2",
+      "blocked_by": [
+        "SLICE-009"
+      ],
+      "requirements": [
+        "FR-013",
+        "FR-020",
+        "FR-011",
+        "NFR-003",
+        "NFR-007",
+        "NFR-009"
+      ],
+      "spec": "SLICE-010/spec.md",
+      "status": "specified_execution_pending"
+    },
+    {
+      "id": "SLICE-011",
+      "title": "covered checkpoints, rewind and explicit cleanup",
+      "milestone": "M2",
+      "blocked_by": [
+        "SLICE-010"
+      ],
+      "requirements": [
+        "FR-014",
+        "FR-010",
+        "FR-011",
+        "NFR-001",
+        "NFR-002",
+        "NFR-007",
+        "NFR-009"
+      ],
+      "spec": "SLICE-011/spec.md",
+      "status": "specified_execution_pending"
+    },
+    {
+      "id": "SLICE-012",
+      "title": "complete Linux execution and descendant coverage",
+      "milestone": "M2",
+      "blocked_by": [
+        "SLICE-011"
+      ],
+      "requirements": [
+        "FR-012",
+        "FR-004",
+        "FR-021",
+        "NFR-001",
+        "NFR-005",
+        "NFR-006",
+        "NFR-009"
+      ],
+      "spec": "SLICE-012/spec.md",
+      "status": "specified_execution_pending"
+    },
+    {
+      "id": "SLICE-013",
+      "title": "injection and authority regression qualification",
+      "milestone": "M2",
+      "blocked_by": [
+        "SLICE-012"
+      ],
+      "requirements": [
+        "FR-015",
+        "FR-011",
+        "FR-012",
+        "FR-017",
+        "NFR-005",
+        "NFR-006",
+        "NFR-009"
+      ],
+      "spec": "SLICE-013/spec.md",
+      "status": "specified_execution_pending"
+    },
+    {
+      "id": "SLICE-014",
+      "title": "tools-only MCP across explicit protocol profiles",
+      "milestone": "M2",
+      "blocked_by": [
+        "SLICE-013"
+      ],
+      "requirements": [
+        "FR-016",
+        "FR-011",
+        "FR-012",
+        "FR-013",
+        "FR-015",
+        "NFR-002",
+        "NFR-005",
+        "NFR-006",
+        "NFR-009"
+      ],
+      "spec": "SLICE-014/spec.md",
+      "status": "specified_execution_pending"
+    },
+    {
+      "id": "SLICE-015",
+      "title": "cross-adapter continuation and attachment qualification",
+      "milestone": "M2",
+      "blocked_by": [
+        "SLICE-014"
+      ],
+      "requirements": [
+        "FR-007",
+        "FR-009",
+        "FR-010",
+        "FR-011",
+        "NFR-002",
+        "NFR-005",
+        "NFR-009"
+      ],
+      "spec": "SLICE-015/spec.md",
+      "status": "specified_execution_pending"
+    },
+    {
+      "id": "SLICE-016",
+      "title": "native ChatGPT connection and account lifecycle",
+      "milestone": "M2",
+      "blocked_by": [
+        "SLICE-004",
+        "SLICE-015"
+      ],
+      "requirements": [
+        "FR-008",
+        "FR-006",
+        "FR-007",
+        "FR-020",
+        "NFR-002",
+        "NFR-003",
+        "NFR-007",
+        "NFR-009"
+      ],
+      "spec": "SLICE-016/spec.md",
+      "status": "specified_execution_pending"
+    },
+    {
+      "id": "SLICE-017",
+      "title": "full transcript navigation, search and source copy",
+      "milestone": "M2",
+      "blocked_by": [
+        "SLICE-008",
+        "SLICE-009",
+        "SLICE-011"
+      ],
+      "requirements": [
+        "FR-019",
+        "FR-018",
+        "NFR-001",
+        "NFR-008",
+        "NFR-009"
+      ],
+      "spec": "SLICE-017/spec.md",
+      "status": "specified_execution_pending"
+    },
+    {
+      "id": "SLICE-018",
+      "title": "welcome, rail, themes and accessibility qualification",
+      "milestone": "M2",
+      "blocked_by": [
+        "SLICE-017"
+      ],
+      "requirements": [
+        "FR-019",
+        "FR-018",
+        "FR-021",
+        "NFR-001",
+        "NFR-008"
+      ],
+      "spec": "SLICE-018/spec.md",
+      "status": "specified_execution_pending"
+    },
+    {
+      "id": "SLICE-019",
+      "title": "verified Linux release and daily-driver acceptance",
+      "milestone": "M2",
+      "blocked_by": [
+        "SLICE-008",
+        "SLICE-012",
+        "SLICE-013",
+        "SLICE-014",
+        "SLICE-015",
+        "SLICE-016",
+        "SLICE-018"
+      ],
+      "requirements": [
+        "FR-023",
+        "FR-021",
+        "NFR-001",
+        "NFR-003",
+        "NFR-004",
+        "NFR-005",
+        "NFR-007",
+        "NFR-009"
+      ],
+      "spec": "SLICE-019/spec.md",
+      "status": "specified_execution_pending"
+    }
+  ]
+}

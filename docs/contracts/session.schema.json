@@ -1,0 +1,761 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mocha durable session records v1",
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "type": {
+          "const": "header"
+        },
+        "turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "payload": {
+          "$ref": "payloads.schema.json#/$defs/record_header"
+        },
+        "checksum": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}$"
+        }
+      },
+      "required": [
+        "schema_version",
+        "session_id",
+        "sequence",
+        "timestamp",
+        "type",
+        "payload",
+        "checksum"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "type": {
+          "const": "prompt_accepted"
+        },
+        "turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "payload": {
+          "$ref": "payloads.schema.json#/$defs/record_prompt_accepted"
+        },
+        "checksum": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}$"
+        }
+      },
+      "required": [
+        "schema_version",
+        "session_id",
+        "sequence",
+        "timestamp",
+        "type",
+        "payload",
+        "checksum",
+        "turn_id"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "type": {
+          "const": "text_delta"
+        },
+        "turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "payload": {
+          "$ref": "payloads.schema.json#/$defs/record_text_delta"
+        },
+        "checksum": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}$"
+        }
+      },
+      "required": [
+        "schema_version",
+        "session_id",
+        "sequence",
+        "timestamp",
+        "type",
+        "payload",
+        "checksum",
+        "turn_id"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "type": {
+          "const": "dispatch_intent"
+        },
+        "turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "payload": {
+          "$ref": "payloads.schema.json#/$defs/record_dispatch_intent"
+        },
+        "checksum": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}$"
+        }
+      },
+      "required": [
+        "schema_version",
+        "session_id",
+        "sequence",
+        "timestamp",
+        "type",
+        "payload",
+        "checksum",
+        "turn_id"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "type": {
+          "const": "tool_result"
+        },
+        "turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "payload": {
+          "$ref": "payloads.schema.json#/$defs/record_tool_result"
+        },
+        "checksum": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}$"
+        }
+      },
+      "required": [
+        "schema_version",
+        "session_id",
+        "sequence",
+        "timestamp",
+        "type",
+        "payload",
+        "checksum",
+        "turn_id"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "type": {
+          "const": "turn_finished"
+        },
+        "turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "payload": {
+          "$ref": "payloads.schema.json#/$defs/record_turn_finished"
+        },
+        "checksum": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}$"
+        }
+      },
+      "required": [
+        "schema_version",
+        "session_id",
+        "sequence",
+        "timestamp",
+        "type",
+        "payload",
+        "checksum",
+        "turn_id"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "type": {
+          "const": "queue_added"
+        },
+        "turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "payload": {
+          "$ref": "payloads.schema.json#/$defs/record_queue_added"
+        },
+        "checksum": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}$"
+        }
+      },
+      "required": [
+        "schema_version",
+        "session_id",
+        "sequence",
+        "timestamp",
+        "type",
+        "payload",
+        "checksum"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "type": {
+          "const": "queue_cancelled"
+        },
+        "turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "payload": {
+          "$ref": "payloads.schema.json#/$defs/record_queue_cancelled"
+        },
+        "checksum": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}$"
+        }
+      },
+      "required": [
+        "schema_version",
+        "session_id",
+        "sequence",
+        "timestamp",
+        "type",
+        "payload",
+        "checksum"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "type": {
+          "const": "queue_activated"
+        },
+        "turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "payload": {
+          "$ref": "payloads.schema.json#/$defs/record_queue_activated"
+        },
+        "checksum": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}$"
+        }
+      },
+      "required": [
+        "schema_version",
+        "session_id",
+        "sequence",
+        "timestamp",
+        "type",
+        "payload",
+        "checksum"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "type": {
+          "const": "model_changed"
+        },
+        "turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "payload": {
+          "$ref": "payloads.schema.json#/$defs/record_model_changed"
+        },
+        "checksum": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}$"
+        }
+      },
+      "required": [
+        "schema_version",
+        "session_id",
+        "sequence",
+        "timestamp",
+        "type",
+        "payload",
+        "checksum"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "type": {
+          "const": "mode_changed"
+        },
+        "turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "payload": {
+          "$ref": "payloads.schema.json#/$defs/record_mode_changed"
+        },
+        "checksum": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}$"
+        }
+      },
+      "required": [
+        "schema_version",
+        "session_id",
+        "sequence",
+        "timestamp",
+        "type",
+        "payload",
+        "checksum"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "type": {
+          "const": "context_compacted"
+        },
+        "turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "payload": {
+          "$ref": "payloads.schema.json#/$defs/record_context_compacted"
+        },
+        "checksum": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}$"
+        }
+      },
+      "required": [
+        "schema_version",
+        "session_id",
+        "sequence",
+        "timestamp",
+        "type",
+        "payload",
+        "checksum",
+        "turn_id"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "type": {
+          "const": "checkpoint_created"
+        },
+        "turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "payload": {
+          "$ref": "payloads.schema.json#/$defs/record_checkpoint_created"
+        },
+        "checksum": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}$"
+        }
+      },
+      "required": [
+        "schema_version",
+        "session_id",
+        "sequence",
+        "timestamp",
+        "type",
+        "payload",
+        "checksum"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "type": {
+          "const": "rewind_started"
+        },
+        "turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "payload": {
+          "$ref": "payloads.schema.json#/$defs/record_rewind_started"
+        },
+        "checksum": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}$"
+        }
+      },
+      "required": [
+        "schema_version",
+        "session_id",
+        "sequence",
+        "timestamp",
+        "type",
+        "payload",
+        "checksum"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "type": {
+          "const": "rewind_result"
+        },
+        "turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "payload": {
+          "$ref": "payloads.schema.json#/$defs/record_rewind_result"
+        },
+        "checksum": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}$"
+        }
+      },
+      "required": [
+        "schema_version",
+        "session_id",
+        "sequence",
+        "timestamp",
+        "type",
+        "payload",
+        "checksum"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "type": {
+          "const": "migration"
+        },
+        "turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "payload": {
+          "$ref": "payloads.schema.json#/$defs/record_migration"
+        },
+        "checksum": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}$"
+        }
+      },
+      "required": [
+        "schema_version",
+        "session_id",
+        "sequence",
+        "timestamp",
+        "type",
+        "payload",
+        "checksum"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "type": {
+          "const": "taint_changed"
+        },
+        "turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "payload": {
+          "$ref": "payloads.schema.json#/$defs/record_taint_changed"
+        },
+        "checksum": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}$"
+        }
+      },
+      "required": [
+        "schema_version",
+        "session_id",
+        "sequence",
+        "timestamp",
+        "type",
+        "payload",
+        "checksum"
+      ],
+      "additionalProperties": false
+    }
+  ],
+  "$id": "https://mocha.invalid/contracts/session.schema.json"
+}

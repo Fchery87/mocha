@@ -6,7 +6,7 @@ Specification dated November 14, 2026. Implementation and execution evidence are
 
 The composition root creates the engine and gives clients a protocol handle. Clients cannot import engine internals. Requests carry `protocol_version`, `request_id`, and a tagged `method` with typed parameters. Session requests also carry `session_id`. Version negotiation precedes other requests. Reject duplicate request IDs within a connection.
 
-M0 methods are `initialize`, `create_session`, `submit_prompt`, and `cancel_turn`. M1 adds `resume_session`, `list_sessions`, `respond_approval`, `respond_question`, `queue_followup`, and `interject`. M2 adds `rewind`. Unsupported methods produce `unsupported_method`. A request gets exactly one accepted or rejected response. Submission acceptance identifies its turn; asynchronous outcomes are separate events.
+M0 methods are `initialize`, `create_session`, `submit_prompt`, and `cancel_turn`. M1 adds `resume_session`, `list_sessions`, `respond_approval`, `respond_question`, `queue_followup`, `cancel_queued`, `interject`, and `select_model`. M2 adds `set_mode`, `preview_rewind`, and `rewind`. Unsupported methods produce `unsupported_method`. A request gets exactly one accepted or rejected response. Submission acceptance identifies its turn; asynchronous outcomes are separate events.
 
 Events carry protocol version, session and turn identities where applicable, a monotonically increasing session sequence, event type, and payload. The event types include `prompt_accepted`, `text_delta`, `tool_requested`, `approval_required`, `tool_started`, `tool_result`, `evidence`, `persistence_error`, and `turn_finished`. M0 uses only its applicable subset. Semantic events keep their order. A tool result identifies its matching call. A final event follows all earlier semantic events for its turn. No event can dispatch an operation during replay.
 
@@ -60,3 +60,10 @@ Initial configurable per-turn limits are 50 provider steps, 200 tool calls, and 
 A headless process never waits for an absent interactive approval channel. Its authorization policy is the same as the TUI's.
 
 Permission modes follow the [policy matrix](tools-and-policy.md#mode-decision-matrix). Unattended mode never waits for approval or required user input, including in the TUI. It returns the same typed approval/input-required outcomes and headless codes documented here.
+
+
+## Boundary and queue limits
+
+The [version-1 schemas and semantics](boundary-payloads.md) define complete request/event/log payloads and queued-message persistence. Submissions are at most 1 MiB of UTF-8 text plus validated attachment references. Per-message attachment limits are shared by all interfaces. Queue capacity remains 16, with stable cancellation/activation identities. Durable queue acceptance cannot precede persistence, and recovery never auto-submits pending text.
+
+Method-tagged acceptance responses require the method-specific correlation identities in the boundary schema. Turn-scoped durable records always require turn_id. Runtime versions declare the full schema union; an engine advertises only supported methods and cannot silently claim future slice capability.

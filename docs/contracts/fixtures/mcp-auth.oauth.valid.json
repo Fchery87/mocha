@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "profile_id": "fixture-oauth",
+  "resource": "https://mcp.example.invalid/mcp",
+  "method": "oauth",
+  "issuer": "https://auth.example.invalid",
+  "client_id": "https://fchery87.github.io/mocha/oauth-client.json",
+  "registration": "cimd",
+  "keychainRef": "fixture-protected-bundle"
+}

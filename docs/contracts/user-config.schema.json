@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mocha user config v1; credential/rule stores separate",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "ui": {
+      "type": "object",
+      "properties": {
+        "layout": {
+          "enum": [
+            "full",
+            "inline"
+          ]
+        },
+        "theme": {
+          "enum": [
+            "auto",
+            "dark",
+            "light"
+          ]
+        },
+        "palette": {
+          "const": "volt"
+        },
+        "motion": {
+          "enum": [
+            "full",
+            "reduced"
+          ]
+        },
+        "mouse": {
+          "type": "boolean"
+        },
+        "ascii": {
+          "type": "boolean"
+        },
+        "rail": {
+          "enum": [
+            "auto",
+            "always",
+            "never"
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "default_mode": {
+      "enum": [
+        "auto",
+        "approve",
+        "plan"
+      ]
+    },
+    "default_model": {
+      "type": "object",
+      "properties": {
+        "connection_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "model_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "connection_id",
+        "model_id"
+      ],
+      "additionalProperties": false
+    },
+    "limits": {
+      "type": "object",
+      "properties": {
+        "provider_steps": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "tool_calls": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "turn_seconds": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "command_seconds": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "capture_bytes": {
+          "type": "integer",
+          "minimum": 32768
+        },
+        "background_jobs": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 16
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "revision"
+  ],
+  "additionalProperties": false,
+  "$id": "https://mocha.invalid/contracts/user-config.schema.json"
+}

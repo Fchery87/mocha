@@ -1,0 +1,1672 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mocha v1 method, event and log payload definitions",
+  "$defs": {
+    "method_initialize": {
+      "type": "object",
+      "properties": {
+        "client_name": {
+          "type": "string",
+          "maxLength": 4096
+        },
+        "supported_versions": {
+          "type": "array",
+          "items": {
+            "const": 1
+          },
+          "maxItems": 8
+        },
+        "interactive": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "client_name",
+        "supported_versions",
+        "interactive"
+      ],
+      "additionalProperties": false
+    },
+    "method_create_session": {
+      "type": "object",
+      "properties": {
+        "workspace": {
+          "type": "string",
+          "pattern": "^/",
+          "maxLength": 4096
+        },
+        "mock": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "workspace"
+      ],
+      "additionalProperties": false
+    },
+    "method_submit_prompt": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1048576
+        },
+        "attachments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "content_hash": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "media_type": {
+                "enum": [
+                  "image/png",
+                  "image/jpeg",
+                  "image/webp"
+                ]
+              },
+              "byte_size": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 10485760
+              },
+              "width": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "height": {
+                "type": "integer",
+                "minimum": 1
+              }
+            },
+            "required": [
+              "content_hash",
+              "media_type",
+              "byte_size",
+              "width",
+              "height"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 4
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "method_cancel_turn": {
+      "type": "object",
+      "properties": {
+        "reason": {
+          "enum": [
+            "user",
+            "interject",
+            "shutdown",
+            "client_disconnect",
+            "client_unresponsive",
+            "deadline"
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "method_resume_session": {
+      "type": "object",
+      "properties": {
+        "read_only": {
+          "const": true
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "method_list_sessions": {
+      "type": "object",
+      "properties": {
+        "workspace": {
+          "type": "string",
+          "maxLength": 4096
+        },
+        "cursor": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        }
+      },
+      "required": [
+        "workspace"
+      ],
+      "additionalProperties": false
+    },
+    "method_respond_approval": {
+      "type": "object",
+      "properties": {
+        "approval_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "action_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "decision": {
+          "enum": [
+            "once",
+            "session",
+            "persistent",
+            "deny"
+          ]
+        }
+      },
+      "required": [
+        "approval_id",
+        "action_digest",
+        "decision"
+      ],
+      "additionalProperties": false
+    },
+    "method_respond_question": {
+      "type": "object",
+      "properties": {
+        "question_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "answer": {
+          "type": "string",
+          "maxLength": 1048576
+        }
+      },
+      "required": [
+        "question_id",
+        "answer"
+      ],
+      "additionalProperties": false
+    },
+    "method_queue_followup": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1048576
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "method_cancel_queued": {
+      "type": "object",
+      "properties": {
+        "queued_message_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        }
+      },
+      "required": [
+        "queued_message_id"
+      ],
+      "additionalProperties": false
+    },
+    "method_interject": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1048576
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "method_select_model": {
+      "type": "object",
+      "properties": {
+        "connection_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "model_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "connection_id",
+        "model_id"
+      ],
+      "additionalProperties": false
+    },
+    "method_set_mode": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "enum": [
+            "auto",
+            "approve",
+            "plan",
+            "unattended"
+          ]
+        }
+      },
+      "required": [
+        "mode"
+      ],
+      "additionalProperties": false
+    },
+    "method_preview_rewind": {
+      "type": "object",
+      "properties": {
+        "checkpoint_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "scope": {
+          "enum": [
+            "code",
+            "conversation",
+            "both"
+          ]
+        }
+      },
+      "required": [
+        "checkpoint_id",
+        "scope"
+      ],
+      "additionalProperties": false
+    },
+    "method_rewind": {
+      "type": "object",
+      "properties": {
+        "preview_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "confirmed": {
+          "const": true
+        }
+      },
+      "required": [
+        "preview_id",
+        "confirmed"
+      ],
+      "additionalProperties": false
+    },
+    "event_prompt_accepted": {
+      "type": "object",
+      "properties": {
+        "request_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        }
+      },
+      "required": [
+        "request_id"
+      ],
+      "additionalProperties": false
+    },
+    "event_text_delta": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "maxLength": 1048576
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "event_tool_requested": {
+      "type": "object",
+      "properties": {
+        "call_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "arguments": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "call_id",
+        "name",
+        "arguments"
+      ],
+      "additionalProperties": false
+    },
+    "event_approval_required": {
+      "type": "object",
+      "properties": {
+        "approval_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "action_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "summary": {
+          "type": "string",
+          "maxLength": 4096
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 4096
+          },
+          "maxItems": 32
+        }
+      },
+      "required": [
+        "approval_id",
+        "action_digest",
+        "summary",
+        "capabilities"
+      ],
+      "additionalProperties": false
+    },
+    "event_question_required": {
+      "type": "object",
+      "properties": {
+        "question_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "question": {
+          "type": "string",
+          "maxLength": 4096
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 4096
+          },
+          "maxItems": 20
+        }
+      },
+      "required": [
+        "question_id",
+        "question"
+      ],
+      "additionalProperties": false
+    },
+    "event_tool_started": {
+      "type": "object",
+      "properties": {
+        "call_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "operation_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        }
+      },
+      "required": [
+        "call_id",
+        "operation_id"
+      ],
+      "additionalProperties": false
+    },
+    "event_tool_result": {
+      "type": "object",
+      "properties": {
+        "call_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "status": {
+          "enum": [
+            "success",
+            "failed",
+            "interrupted",
+            "partial",
+            "unknown"
+          ]
+        },
+        "summary": {
+          "type": "string",
+          "maxLength": 4096
+        },
+        "changed_paths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 4096
+          },
+          "maxItems": 10000
+        },
+        "pending_paths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 4096
+          },
+          "maxItems": 10000
+        },
+        "recovery_coverage": {
+          "enum": [
+            "none",
+            "partial",
+            "checkpoint"
+          ]
+        },
+        "evidence_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "error": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{0,79}$"
+            },
+            "message": {
+              "type": "string",
+              "maxLength": 4096
+            },
+            "retryable": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "code",
+            "message"
+          ],
+          "additionalProperties": false
+        },
+        "read_observation": {
+          "type": "object",
+          "properties": {
+            "observation_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{1,80}$"
+            },
+            "path": {
+              "type": "string",
+              "maxLength": 4096
+            },
+            "absent": {
+              "type": "boolean"
+            },
+            "full_read": {
+              "type": "boolean"
+            },
+            "content_hash": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "file_identity": {
+              "type": "object",
+              "properties": {
+                "device": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "inode": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "device",
+                "inode"
+              ],
+              "additionalProperties": false
+            },
+            "observed_spans": {
+              "type": "array",
+              "maxItems": 10000,
+              "items": {
+                "type": "object",
+                "properties": {
+                  "start_byte": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "end_byte": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "start_byte",
+                  "end_byte"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "redacted_ranges": {
+              "type": "array",
+              "maxItems": 10000,
+              "items": {
+                "type": "object",
+                "properties": {
+                  "start_byte": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "end_byte": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "start_byte",
+                  "end_byte"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "observation_id",
+            "path",
+            "absent",
+            "full_read",
+            "observed_spans",
+            "redacted_ranges"
+          ],
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "absent": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "content_hash",
+                  "file_identity"
+                ]
+              }
+            }
+          ]
+        },
+        "data": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "call_id",
+        "status",
+        "summary",
+        "recovery_coverage",
+        "evidence_id"
+      ],
+      "additionalProperties": false
+    },
+    "event_evidence": {
+      "type": "object",
+      "properties": {
+        "evidence_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "call_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "summary": {
+          "type": "string",
+          "maxLength": 4096
+        },
+        "spill_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "output_truncated": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "summary",
+        "output_truncated"
+      ],
+      "additionalProperties": false
+    },
+    "event_persistence_error": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{0,79}$"
+        },
+        "message": {
+          "type": "string",
+          "maxLength": 4096
+        },
+        "retryable": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "additionalProperties": false
+    },
+    "event_queue_changed": {
+      "type": "object",
+      "properties": {
+        "queued_message_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "state": {
+          "enum": [
+            "pending",
+            "activated",
+            "cancelled"
+          ]
+        },
+        "activated_turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        }
+      },
+      "required": [
+        "queued_message_id",
+        "state"
+      ],
+      "additionalProperties": false
+    },
+    "event_model_changed": {
+      "type": "object",
+      "properties": {
+        "connection_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "model_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "connection_id",
+        "model_id"
+      ],
+      "additionalProperties": false
+    },
+    "event_mode_changed": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "enum": [
+            "auto",
+            "approve",
+            "plan",
+            "unattended"
+          ]
+        }
+      },
+      "required": [
+        "mode"
+      ],
+      "additionalProperties": false
+    },
+    "event_rewind_preview": {
+      "type": "object",
+      "properties": {
+        "preview_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "checkpoint_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "scope": {
+          "enum": [
+            "code",
+            "conversation",
+            "both"
+          ]
+        },
+        "paths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 4096
+          },
+          "maxItems": 10000
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "preview_id",
+        "checkpoint_id",
+        "scope",
+        "paths",
+        "expires_at"
+      ],
+      "additionalProperties": false
+    },
+    "event_turn_finished": {
+      "type": "object",
+      "properties": {
+        "outcome": {
+          "enum": [
+            "Done",
+            "Failed",
+            "Interrupted",
+            "BudgetExhausted"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{0,79}$"
+        },
+        "summary": {
+          "type": "string",
+          "maxLength": 4096
+        },
+        "unresolved_operations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{1,80}$"
+          },
+          "maxItems": 200
+        }
+      },
+      "required": [
+        "outcome",
+        "summary",
+        "unresolved_operations"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "outcome": {
+                "enum": [
+                  "Failed",
+                  "Interrupted",
+                  "BudgetExhausted"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "reason"
+            ]
+          }
+        }
+      ]
+    },
+    "record_header": {
+      "type": "object",
+      "properties": {
+        "workspace": {
+          "type": "string",
+          "maxLength": 4096
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "model": {
+          "type": "object",
+          "properties": {
+            "connection_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{1,80}$"
+            },
+            "model_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            }
+          },
+          "required": [
+            "connection_id",
+            "model_id"
+          ],
+          "additionalProperties": false
+        },
+        "mock": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "workspace",
+        "created_at",
+        "mock"
+      ],
+      "additionalProperties": false
+    },
+    "record_prompt_accepted": {
+      "type": "object",
+      "properties": {
+        "request_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1048576
+        },
+        "attachments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "content_hash": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "media_type": {
+                "enum": [
+                  "image/png",
+                  "image/jpeg",
+                  "image/webp"
+                ]
+              },
+              "byte_size": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 10485760
+              },
+              "width": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "height": {
+                "type": "integer",
+                "minimum": 1
+              }
+            },
+            "required": [
+              "content_hash",
+              "media_type",
+              "byte_size",
+              "width",
+              "height"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 4
+        }
+      },
+      "required": [
+        "request_id",
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "record_dispatch_intent": {
+      "type": "object",
+      "properties": {
+        "operation_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "call_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "tool_name": {
+          "type": "string",
+          "maxLength": 4096
+        },
+        "redacted_arguments": {
+          "type": "object"
+        },
+        "action_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "recovery_coverage": {
+          "enum": [
+            "none",
+            "partial",
+            "checkpoint"
+          ]
+        },
+        "checkpoint_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        }
+      },
+      "required": [
+        "operation_id",
+        "call_id",
+        "tool_name",
+        "redacted_arguments",
+        "action_digest",
+        "recovery_coverage"
+      ],
+      "additionalProperties": false
+    },
+    "record_queue_added": {
+      "type": "object",
+      "properties": {
+        "queued_message_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1048576
+        },
+        "kind": {
+          "enum": [
+            "followup",
+            "interject"
+          ]
+        }
+      },
+      "required": [
+        "queued_message_id",
+        "request_id",
+        "text",
+        "kind"
+      ],
+      "additionalProperties": false
+    },
+    "record_queue_cancelled": {
+      "type": "object",
+      "properties": {
+        "queued_message_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        }
+      },
+      "required": [
+        "queued_message_id"
+      ],
+      "additionalProperties": false
+    },
+    "record_queue_activated": {
+      "type": "object",
+      "properties": {
+        "queued_message_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "turn_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        }
+      },
+      "required": [
+        "queued_message_id",
+        "turn_id"
+      ],
+      "additionalProperties": false
+    },
+    "record_context_compacted": {
+      "type": "object",
+      "properties": {
+        "source_first_sequence": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source_last_sequence": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "handoff": {
+          "type": "object",
+          "properties": {
+            "goals": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 4096
+              },
+              "maxItems": 1000
+            },
+            "decisions": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 4096
+              },
+              "maxItems": 1000
+            },
+            "instruction_refs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 4096
+              },
+              "maxItems": 1000
+            },
+            "touched_files": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 4096
+              },
+              "maxItems": 1000
+            },
+            "open_work": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 4096
+              },
+              "maxItems": 1000
+            },
+            "unresolved_operations": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 4096
+              },
+              "maxItems": 1000
+            },
+            "grant_refs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 4096
+              },
+              "maxItems": 1000
+            },
+            "evidence_refs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 4096
+              },
+              "maxItems": 1000
+            }
+          },
+          "required": [
+            "goals",
+            "decisions",
+            "instruction_refs",
+            "touched_files",
+            "open_work",
+            "unresolved_operations",
+            "grant_refs",
+            "evidence_refs"
+          ],
+          "additionalProperties": false
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{1,80}$"
+          },
+          "maxItems": 256
+        },
+        "tainted": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "source_first_sequence",
+        "source_last_sequence",
+        "handoff",
+        "evidence_ids",
+        "tainted"
+      ],
+      "additionalProperties": false
+    },
+    "record_checkpoint_created": {
+      "type": "object",
+      "properties": {
+        "checkpoint_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "manifest_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "conversation_sequence": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "checkpoint_id",
+        "manifest_hash",
+        "conversation_sequence"
+      ],
+      "additionalProperties": false
+    },
+    "record_rewind_started": {
+      "type": "object",
+      "properties": {
+        "operation_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "preview_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "checkpoint_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "scope": {
+          "enum": [
+            "code",
+            "conversation",
+            "both"
+          ]
+        }
+      },
+      "required": [
+        "operation_id",
+        "preview_id",
+        "checkpoint_id",
+        "scope"
+      ],
+      "additionalProperties": false
+    },
+    "record_rewind_result": {
+      "type": "object",
+      "properties": {
+        "operation_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "status": {
+          "enum": [
+            "success",
+            "partial",
+            "failed",
+            "unknown"
+          ]
+        },
+        "changed_paths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 4096
+          },
+          "maxItems": 10000
+        },
+        "pending_paths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 4096
+          },
+          "maxItems": 10000
+        }
+      },
+      "required": [
+        "operation_id",
+        "status",
+        "changed_paths",
+        "pending_paths"
+      ],
+      "additionalProperties": false
+    },
+    "record_migration": {
+      "type": "object",
+      "properties": {
+        "from_version": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "to_version": {
+          "const": 1
+        },
+        "original_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "from_version",
+        "to_version",
+        "original_hash"
+      ],
+      "additionalProperties": false
+    },
+    "record_text_delta": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "maxLength": 1048576
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "record_tool_result": {
+      "type": "object",
+      "properties": {
+        "call_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "status": {
+          "enum": [
+            "success",
+            "failed",
+            "interrupted",
+            "partial",
+            "unknown"
+          ]
+        },
+        "summary": {
+          "type": "string",
+          "maxLength": 4096
+        },
+        "changed_paths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 4096
+          },
+          "maxItems": 10000
+        },
+        "pending_paths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 4096
+          },
+          "maxItems": 10000
+        },
+        "recovery_coverage": {
+          "enum": [
+            "none",
+            "partial",
+            "checkpoint"
+          ]
+        },
+        "evidence_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "error": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{0,79}$"
+            },
+            "message": {
+              "type": "string",
+              "maxLength": 4096
+            },
+            "retryable": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "code",
+            "message"
+          ],
+          "additionalProperties": false
+        },
+        "read_observation": {
+          "type": "object",
+          "properties": {
+            "observation_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{1,80}$"
+            },
+            "path": {
+              "type": "string",
+              "maxLength": 4096
+            },
+            "absent": {
+              "type": "boolean"
+            },
+            "full_read": {
+              "type": "boolean"
+            },
+            "content_hash": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "file_identity": {
+              "type": "object",
+              "properties": {
+                "device": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "inode": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "device",
+                "inode"
+              ],
+              "additionalProperties": false
+            },
+            "observed_spans": {
+              "type": "array",
+              "maxItems": 10000,
+              "items": {
+                "type": "object",
+                "properties": {
+                  "start_byte": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "end_byte": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "start_byte",
+                  "end_byte"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "redacted_ranges": {
+              "type": "array",
+              "maxItems": 10000,
+              "items": {
+                "type": "object",
+                "properties": {
+                  "start_byte": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "end_byte": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "start_byte",
+                  "end_byte"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "observation_id",
+            "path",
+            "absent",
+            "full_read",
+            "observed_spans",
+            "redacted_ranges"
+          ],
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "absent": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "content_hash",
+                  "file_identity"
+                ]
+              }
+            }
+          ]
+        },
+        "data": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "call_id",
+        "status",
+        "summary",
+        "recovery_coverage",
+        "evidence_id"
+      ],
+      "additionalProperties": false
+    },
+    "record_turn_finished": {
+      "type": "object",
+      "properties": {
+        "outcome": {
+          "enum": [
+            "Done",
+            "Failed",
+            "Interrupted",
+            "BudgetExhausted"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{0,79}$"
+        },
+        "summary": {
+          "type": "string",
+          "maxLength": 4096
+        },
+        "unresolved_operations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{1,80}$"
+          },
+          "maxItems": 200
+        }
+      },
+      "required": [
+        "outcome",
+        "summary",
+        "unresolved_operations"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "outcome": {
+                "enum": [
+                  "Failed",
+                  "Interrupted",
+                  "BudgetExhausted"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "reason"
+            ]
+          }
+        }
+      ]
+    },
+    "record_model_changed": {
+      "type": "object",
+      "properties": {
+        "connection_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "model_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "connection_id",
+        "model_id"
+      ],
+      "additionalProperties": false
+    },
+    "record_mode_changed": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "enum": [
+            "auto",
+            "approve",
+            "plan",
+            "unattended"
+          ]
+        }
+      },
+      "required": [
+        "mode"
+      ],
+      "additionalProperties": false
+    },
+    "event_taint_changed": {
+      "type": "object",
+      "properties": {
+        "tainted": {
+          "const": true
+        },
+        "origin_kind": {
+          "enum": [
+            "project_instruction",
+            "file",
+            "tool_result",
+            "mcp_result",
+            "imported_history"
+          ]
+        },
+        "origin_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "origin_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "tainted",
+        "origin_kind",
+        "origin_ref"
+      ],
+      "additionalProperties": false
+    },
+    "record_taint_changed": {
+      "type": "object",
+      "properties": {
+        "tainted": {
+          "const": true
+        },
+        "origin_kind": {
+          "enum": [
+            "project_instruction",
+            "file",
+            "tool_result",
+            "mcp_result",
+            "imported_history"
+          ]
+        },
+        "origin_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "origin_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "tainted",
+        "origin_kind",
+        "origin_ref"
+      ],
+      "additionalProperties": false
+    },
+    "event_rewind_result": {
+      "type": "object",
+      "properties": {
+        "operation_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{1,80}$"
+        },
+        "status": {
+          "enum": [
+            "success",
+            "partial",
+            "failed",
+            "unknown"
+          ]
+        },
+        "changed_paths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 4096
+          },
+          "maxItems": 10000
+        },
+        "pending_paths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 4096
+          },
+          "maxItems": 10000
+        }
+      },
+      "required": [
+        "operation_id",
+        "status",
+        "changed_paths",
+        "pending_paths"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$id": "https://mocha.invalid/contracts/payloads.schema.json"
+}

@@ -1,6 +1,6 @@
 # Mocha architecture and build plan
 
-Revision 6, November 14, 2026. Confirmed build baseline aligned with [PRD revision 4](02-prd.md). Product choices are confirmed in the interview. The maintainer confirmed shared understanding of the handoff on November 14, 2026. All mechanisms and guards below are proposed until implementation evidence exists. Earlier accepted-revision and active-guard claims were not supported by this checkout and are withdrawn.
+Revision 7, November 14, 2026. Confirmed build baseline aligned with [PRD revision 5](02-prd.md). Product choices are confirmed in the interview. The maintainer confirmed shared understanding of the handoff on November 14, 2026. All mechanisms and guards below are proposed until implementation evidence exists. Earlier accepted-revision and active-guard claims were not supported by this checkout and are withdrawn.
 
 ## Runtime shape
 
@@ -73,7 +73,7 @@ Target x86_64-unknown-linux-musl and aarch64-unknown-linux-musl releases. Prove 
 
 ## Delivery dependencies
 
-Each later slice gets a concrete specification and verifier before its code. The table fixes ordering and scope; it does not assert that those later specifications already exist. Owner is the maintainer, with implementation assistance from the coding agent. Evidence is stored per slice under its future `evidence/` directory, with secrets removed.
+All 19 slices now have [concrete local specifications](slices/README.md) with planned verifier entry points and acceptance/failure cases. The [slice manifest](slices/manifest.json) is the canonical dependency/requirement map. Actual verifier implementations and evidence are still required before acceptance. Owner is the maintainer, with implementation assistance from the coding agent. Evidence is stored per slice under its future `evidence/` directory, with secrets removed.
 
 | Slice | Milestone | Observable result and dependency |
 | --- | --- | --- |
@@ -90,12 +90,12 @@ Each later slice gets a concrete specification and verifier before its code. The
 | SLICE-011 | M2 | Covered checkpoints, rewind, cleanup and partial-restore tests; depends on 010 |
 | SLICE-012 | M2 | Complete containment coverage, background/local MCP integration checks; depends on 011, extends rather than introduces M1 containment |
 | SLICE-013 | M2 | Taint/injection regression fixtures through real enforcement; depends on 012 |
-| SLICE-014 | M2 | Tools-only MCP in both named revisions/transports; depends on 013 |
+| SLICE-014 | M2 | Tools-only MCP in both named revisions/transports, static auth and explicit browser OAuth; depends on 013 |
 | SLICE-015 | M2 | Cross-adapter context/image/recovery compatibility qualification; depends on 014. No adapter deferred from M1. |
 | SLICE-016 | M2 | Native ChatGPT sign-in complete; depends on early feasibility proof and 015 |
-| SLICE-017 | M2 | Full transcript scroll, selection/copy, search and inline parity; depends on 016 |
+| SLICE-017 | M2 | Full transcript scroll, selection/copy, search and inline parity; depends on 008, 009 and 011. Does not wait on SIWC eligibility. |
 | SLICE-018 | M2 | Rail, welcome, dark/light/accessibility and terminal robustness; depends on 017 |
-| SLICE-019 | M2 | Static releases, signatures/provenance, installation, complete doctor and daily-driver acceptance; depends on 018 |
+| SLICE-019 | M2 | Static releases, signatures/provenance, installation, complete doctor and daily-driver acceptance; depends on 008, 012–016 and 018 |
 
 ## Guards and evidence status
 
@@ -104,3 +104,5 @@ Every guard is PROPOSED. Activate a guard only after a real failing/passing exam
 Required guards cover performance, dependency direction, license/advisory/source policy, protocol ordering, no credentials at any sink, real read-before-write/tool effects, crash and uncertain-outcome recovery, actual sandbox enforcement, context/compaction invariants, MCP profiles, and PTY keyboard/terminal restoration. [Verification](verification.md) maps requirements and defines evidence boundaries. Real-model coding outcomes are separate from mock regression mechanics.
 
 The earlier architecture's ADR-001 through ADR-010 labels were inline historical notes, not canonical files. Current durable decisions are [recovery storage](adr/0001-bounded-local-recovery-storage.md), [replay](adr/0002-separate-replay-from-execution.md), and [authorization/containment](adr/0003-scoped-authorization-and-containment.md). Routine module and sequencing choices live in this architecture.
+
+[Boundary schemas](contracts/boundary-payloads.md) now fix public method/event/session/config/tool shapes before application code. Provider/context/input bounds precede real inference, basic capture/spill precedes real commands, and checkpoint-dependent Auto actions remain blocked until 011.

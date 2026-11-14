@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "purpose": "Fixed small coding acceptance inputs, not evidence of real agent quality",
+  "tasks": [
+    {
+      "id": "TASK-BUG-001",
+      "title": "repair mean calculation",
+      "prompt": "Fix mean so empty input returns None and nonempty small i64 input returns the arithmetic mean as f64. Preserve the public signature.",
+      "language": "rust",
+      "edition": "2021",
+      "initial_source": "pub fn mean(values: &[i64]) -> Option<f64> { if values.is_empty() { return None; } Some(values.iter().sum::<i64>() as f64 / (values.len() + 1) as f64) }\n",
+      "reference_source": "pub fn mean(values: &[i64]) -> Option<f64> { if values.is_empty() { return None; } Some(values.iter().sum::<i64>() as f64 / values.len() as f64) }\n",
+      "grader_source": "#[cfg(test)] mod grading { use super::*; #[test] fn empty(){assert_eq!(mean(&[]),None);} #[test] fn values(){assert_eq!(mean(&[2,4]),Some(3.0));assert_eq!(mean(&[-2,2]),Some(0.0));assert_eq!(mean(&[7]),Some(7.0));} }\n",
+      "initial_sha256": "370b8faaedd41c4edead7d723302734756cccbb69a79624ba1969aab066b58ce",
+      "grader_sha256": "19a1e3c05d78711728c92fc1bc628edc6d1433882e5eb7d297c19ecedd743d51",
+      "expected_initial": "fail",
+      "expected_reference": "pass"
+    },
+    {
+      "id": "TASK-FEATURE-001",
+      "title": "parse a validated port",
+      "prompt": "Implement parse_port. Trim ASCII whitespace, accept nonempty ASCII decimal digits and leading zeros in range 0..65535. Reject signs, embedded spaces, non-ASCII digits, alternate bases and out-of-range values. Preserve the public signature.",
+      "language": "rust",
+      "edition": "2021",
+      "initial_source": "pub fn parse_port(_input: &str) -> Result<u16, &'static str> { Err(\"not implemented\") }\n",
+      "reference_source": "pub fn parse_port(input: &str) -> Result<u16, &'static str> { let s=input.trim_matches(|c: char| c.is_ascii_whitespace()); if s.is_empty() || !s.bytes().all(|b| b.is_ascii_digit()) { return Err(\"invalid port\"); } s.parse::<u16>().map_err(|_| \"invalid port\") }\n",
+      "grader_source": "#[cfg(test)] mod grading { use super::*; #[test] fn valid(){for (s,v) in [(\"0\",0),(\"65535\",65535),(\" 80\\n\",80),(\"00080\",80)]{assert_eq!(parse_port(s),Ok(v));}} #[test] fn invalid(){for s in [\"\", \"  \", \"-1\", \"+1\", \"65536\", \"8 0\", \"\uff11\uff12\", \"0x50\", \"\\u{a0}80\"]{assert!(parse_port(s).is_err(),\"{s}\");}} }\n",
+      "initial_sha256": "254794ed47899dcb9614f14807c42eae1dc6cdd189529874d92bc32439282691",
+      "grader_sha256": "e88613d34b471deaf5b304632e9408c310ef346769bb3f9a1d771fae2210dfa5",
+      "expected_initial": "fail",
+      "expected_reference": "pass"
+    }
+  ],
+  "recovery_case": {
+    "id": "TASK-RECOVERY-001",
+    "source": "covered-recovery.txt",
+    "initial_content": "before\n",
+    "mutated_content": "after\n",
+    "fault_boundary": "effect completed before durable tool result",
+    "expected_resume": "outcome unknown; no automatic provider request or repeated mutation",
+    "expected_rewind": "explicitly confirmed restore returns exact initial hash with taint retained"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1,
+  "profile_id": "fixture-auth",
+  "resource": "https://mcp.example.invalid/mcp",
+  "method": "static",
+  "envRef": "FIXTURE_MCP_TOKEN"
+}

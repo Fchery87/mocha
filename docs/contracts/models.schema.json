@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/Fchery87/mocha/models.schema.json",
+  "$id": "https://mocha.invalid/contracts/models.schema.json",
   "title": "Mocha models configuration v1",
   "description": "Missing limits are loadable but must be resolved before inference. Endpoint policy and duplicate identities also require semantic validation.",
   "type": "object",

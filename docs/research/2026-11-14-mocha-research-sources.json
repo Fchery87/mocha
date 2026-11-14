@@ -12,7 +12,7 @@
     },
     "note": "Requested result slots are not unique sources read. Registry requests are separate from Exa search accounting."
   },
-  "source_count": 101,
+  "source_count": 107,
   "date_limit": "Mutable sources establish observed documentation, not a complete historical snapshot. Dated publications and versioned specifications support the date-specific conclusions stated in the report.",
   "sources": [
     {
@@ -751,6 +751,55 @@
         "docs-handoff-follow-up"
       ],
       "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization",
+      "read_by": [
+        "final-slice-review"
+      ],
+      "evidence_status": "version_pinned_documentation",
+      "observed": "2026-11-14"
+    },
+    {
+      "url": "https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization",
+      "read_by": [
+        "final-slice-review"
+      ],
+      "evidence_status": "version_pinned_documentation",
+      "observed": "2026-11-14"
+    },
+    {
+      "url": "https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization/client-registration",
+      "read_by": [
+        "final-slice-review"
+      ],
+      "evidence_status": "version_pinned_documentation",
+      "observed": "2026-11-14"
+    },
+    {
+      "url": "https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization/security-considerations",
+      "read_by": [
+        "final-slice-review"
+      ],
+      "evidence_status": "version_pinned_documentation",
+      "observed": "2026-11-14"
+    },
+    {
+      "url": "https://crates.io/api/v1/crates/mocha-code",
+      "read_by": [
+        "final-slice-review"
+      ],
+      "evidence_status": "observed_registry_response_404",
+      "observed": "2026-11-14"
+    },
+    {
+      "url": "https://datatracker.ietf.org/doc/html/draft-ietf-oauth-client-id-metadata-document-03",
+      "read_by": [
+        "final-slice-review"
+      ],
+      "evidence_status": "version_pinned_draft",
+      "date": "2026-11-02",
+      "observed": "2026-11-14"
     }
   ],
   "follow_up_note": "The search accounting describes the original research pass. Additional decision-interview primary-source reads are recorded separately by read_by and do not change that historical search accounting."

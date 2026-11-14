@@ -55,3 +55,12 @@ A compaction handoff preserves goals, decisions, touched files, current guidance
 A model switch constructs a compatible view before its first request. Never forward another provider's opaque signatures or reasoning state. Keep those original blocks in history. Explain compaction needed for a smaller model before the authorized continuation incurs inference. Refreshing metadata cannot switch the session or saved default.
 
 Image inputs use `--image <path>` in headless mode and `/attach <path>` in the TUI. Validate file type, size, path policy, and selected model capability. Unsupported image input gives an actionable failure and never silently switches paid models. Terminal image rendering is optional; textual attachment identity remains available.
+
+
+## Snapshot and rewind integrity
+
+Scan candidate file bytes before Git staging. If a covered file contains a known harness credential, exclude the whole file, record absent coverage and require explicit uncovered-file approval for its mutation. Never store a redacted imitation of the file as a faithful checkpoint, including temporary objects. Unrecognized secrets remain within the accepted private-plaintext boundary. A later discovery does not justify silently deleting retained history; stop new exposure and require explicit cleanup with its reference preview.
+
+After any restore, invalidate affected read observations and reload applicable instruction files. Taint remains sticky across code-only, conversation-only and combined rewind in the same session. Reevaluate pending actions/approvals against restored state and current grants. Conversation rewind cannot erase authority checks or make an uncertain side effect safe to repeat.
+
+Image attachment limits and persistence are specified in [SLICE-015](../slices/SLICE-015/spec.md#interfaces-and-behavior). Those same validation limits apply from the first M1 adapter path that accepts images, rather than deferring basic capability validation to M2 qualification.

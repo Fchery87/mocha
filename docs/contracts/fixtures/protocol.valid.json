@@ -1,0 +1,67 @@
+[
+  {
+    "protocol_version": 1,
+    "request_id": "r1",
+    "method": "initialize",
+    "params": {
+      "client_name": "fixture",
+      "supported_versions": [
+        1
+      ],
+      "interactive": false
+    }
+  },
+  {
+    "protocol_version": 1,
+    "request_id": "r2",
+    "method": "create_session",
+    "params": {
+      "workspace": "/fixture/workspace",
+      "mock": true
+    }
+  },
+  {
+    "protocol_version": 1,
+    "request_id": "r3",
+    "method": "submit_prompt",
+    "session_id": "session-fixture",
+    "params": {
+      "text": "hello"
+    }
+  },
+  {
+    "protocol_version": 1,
+    "type": "turn_finished",
+    "session_id": "session-fixture",
+    "turn_id": "turn-fixture",
+    "sequence": 2,
+    "durable_sequence": null,
+    "payload": {
+      "outcome": "Done",
+      "summary": "fixture reply",
+      "unresolved_operations": []
+    }
+  },
+  {
+    "protocol_version": 1,
+    "type": "request_accepted",
+    "request_id": "r3",
+    "method": "submit_prompt",
+    "payload": {
+      "session_id": "session-fixture",
+      "turn_id": "turn-fixture"
+    }
+  },
+  {
+    "protocol_version": 1,
+    "type": "taint_changed",
+    "session_id": "session-fixture",
+    "sequence": 3,
+    "durable_sequence": 3,
+    "payload": {
+      "tainted": true,
+      "origin_kind": "project_instruction",
+      "origin_ref": "AGENTS.md"
+    }
+  }
+]

@@ -23,7 +23,7 @@ Each row identifies required evidence. The first applicable slice establishes th
 | FR-013 | 005, 010 | Untrusted repo cannot execute config; changed trust hashes require renewed approval |
 | FR-014 | 011 | Exact coverage/exclusion matrix, external edits, ENOSPC, partial restore and no source-Git changes |
 | FR-015 | 013 | Hostile content exercises actual authorization, secret and outbound boundaries |
-| FR-016 | 014 | Both revisions × both transports, pagination, cache/auth/schema changes and uncertain remote effects |
+| FR-016 | 014 | Both revisions × both transports, static/OAuth discovery/registration/refresh/logout, pagination, cache/schema changes and uncertain remote effects |
 | FR-017 | 007 | Global/nested precedence, changes, batch scopes, size and symlink boundaries |
 | FR-018 | 008 | Plain TUI PTY, resize, honest progress, color degradation and keyboard cancellation |
 | FR-019 | 017, 018 | Scroll anchor, source copy, clipboard fallback, search, rail and keyboard/inline parity |
@@ -71,3 +71,12 @@ For full configuration-schema validation, run `uv run --no-project --with jsonsc
 [Permission decision fixtures](contracts/fixtures/permission-decisions.json) capture expected mode outcomes. Future SLICE-009 policy tests must consume equivalent independent acceptance cases and exercise real dispatch. Structurally validating these fixture files does not test an implemented engine.
 
 Run `python3 scripts/check_permission_contract.py --self-test` to check canonical mode columns, all-mode acceptance coverage, and selected policy invariants. The self-test deliberately introduces Plan mutation, unattended-wait and missing-scope errors. This validates the written examples, not an executing policy engine.
+
+
+## Complete slice and interface checks
+
+All 19 local slice specifications are indexed in [the manifest and completion contract](slices/README.md). Run `python3 scripts/check_slices.py --self-test` to verify existence, acyclic dependencies, acceptance-case structure and complete PRD ID coverage. Run `uv run --no-project --with jsonschema python scripts/check_boundary_schemas.py --self-test` for local schemas, positive/invalid messages, CRC32C and prepared OAuth metadata. Both are document/interface consistency checks, not runtime proofs.
+
+Run `python3 scripts/check_acceptance_corpus.py` with an installed rustc to prove the fixed coding graders fail broken/stub candidates and pass reference candidates. This makes the [small coding corpus](fixtures/coding-acceptance.json) a checked acceptance input, not a real-model quality result. The independent runner must keep grading inputs outside the agent-writable workspace and record task/model/budget/intervention/effect evidence.
+
+SLICE-014 additionally requires the published Client ID Metadata Document to match the checked source and exact callback, both MCP auth/version profiles, invalid-discovery/PKCE/resource/issuer cases, protected refresh/logout races, and headless consent refusal. OAuth success cannot mark a forbidden tool authorized. Documentation review performs no login, metadata deployment, signing or publication.

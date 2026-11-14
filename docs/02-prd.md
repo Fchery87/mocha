@@ -3,7 +3,7 @@
 | Field | Value |
 | --- | --- |
 | Status | CONFIRMED: maintainer approved the shared build specification on November 14, 2026 |
-| Revision | 4, November 14, 2026, incorporating the confirmed follow-up gap closures |
+| Revision | 5, November 14, 2026, incorporating the final 19-slice review and confirmed remote MCP OAuth scope |
 | Scope | Milestones M0–M2 on Linux, with the integration gates stated below |
 | Evidence cutoff | November 14, 2026. Mutable sources are identified in the research report. |
 | Research | [Market and build-readiness findings](research/2026-11-14-mocha-market-and-build-readiness.md), [source inventory](research/2026-11-14-mocha-research-sources.json), [dependency evidence](research/2026-11-14-mocha-dependency-evidence.json) |
@@ -283,6 +283,7 @@ Commands and local MCP subprocesses use the selected OS containment profile. The
 **P0 · M2**
 
 - Support tools over configured stdio and Streamable HTTP transports. Project servers require trust. Tool schemas are deferred until needed.
+- Remote MCP supports user-scoped static bearer/environment credentials and explicit browser OAuth with discovery, PKCE, resource/issuer binding, protected refresh/logout and supported client registration. OAuth consent never grants tool authority. Headless/Unattended stop when fresh consent is required. The provider/MCP contract specifies exact behavior and public metadata publication gates.
 - Publish the supported revision/capability profile and prove it with the selected SDK. The researched current revision is `2026-07-28`, whose request/lifecycle rules differ from handshake-based `2025-11-25` and earlier. Advertised legacy support requires separate fixtures. [Versioning](https://modelcontextprotocol.io/specification/versioning), [dated changes](https://modelcontextprotocol.io/specification/2026-07-28/changelog).
 - Discovery handles pagination, schema limits, stable server/tool identity, cache freshness/scope, changed lists, and changed credentials. Unsupported input-required/capability cases return an explicit outcome rather than hanging or falsely advertising support.
 - Server/tool hints are advisory. Unknown effects require approval under independent policy. Grants and credentials are scoped to the intended server/resource.
@@ -482,7 +483,7 @@ These interview choices were confirmed by the maintainer. A subsequent [semantic
 | D-14 | Independent cancellation; 30-second continuously blocked delivery interrupts | Full-channel, blocked-pipe, persistence and PTY/clock cases |
 | D-15 | Cross-process shared-state ownership/revision checks; minimum guards before real commands | Config/auth race tests and SLICE-005 prerequisite failure-path evidence |
 
-Before each later slice, its spec assigns acceptance/failure cases, exact public types/schemas, verifier commands, owner, and evidence location. These detailed slice specs are written before their code, not invented as prior completed work. Integration failures remain visible gates, not silent scope reductions.
+All 19 local slice specs now assign acceptance/failure cases, boundary schemas, planned verifier commands, owner, dependencies and evidence requirements. The final review resolved the remote MCP authentication choice with explicit maintainer approval for OAuth plus static keys. Schemas/specifications are not generated execution evidence. Integration failures remain visible gates, not silent scope reductions.
 
 ## 8. Release gates
 
@@ -498,11 +499,13 @@ A planned test command, a mock narrative, registry metadata, or an `ACTIVE` labe
 
 ## 9. Build handoff
 
-[The documentation index](README.md) defines authority and status. [Architecture](04-architecture.md) orders the work. Four contracts define runtime, tools/policy, providers/MCP, and storage/context behavior. [Verification](verification.md) maps all requirements to slices and evidence. [SLICE-001](slices/SLICE-001/spec.md) is the first concrete implementation specification.
+[The documentation index](README.md) defines authority and status. [Architecture](04-architecture.md) orders the work. Four contracts define runtime, tools/policy, providers/MCP, and storage/context behavior. [Verification](verification.md) maps all requirements to slices and evidence. [The complete slice index](slices/README.md) links all 19 concrete implementation specifications, beginning with SLICE-001.
 
 The feature roadmap and UI design have been reconciled to this scope. The older blueprint is historical. No application behavior, CI guard, benchmark, provider access, or release artifact is claimed as proved by documentation checks. The maintainer confirmed shared understanding on November 14, 2026. SLICE-001 is ready for implementation.
 
 ## 10. Revision history
+
+- Revision 5, November 14, 2026: completes the local 19-slice specification review; confirms remote MCP browser OAuth plus static keys; supplies version-1 boundary schemas and acceptance corpus; closes context/capture/queue/redaction/rewind/UI/release detail gaps and corrects UI-versus-SIWC blocking dependencies. Actual implementation and external feasibility gates remain pending.
 
 - Revision 4, November 14, 2026: resolves the five audited specification findings. Final mode naming/behavior was selected under the maintainer's explicit delegation. Renames rip/careful/yolo to auto/approve/unattended, defines the mode matrix and noninteractive refusal, removes the cumulative token cap, specifies independent cancellation/shared-state coordination, and fixes first-command prerequisites. Runtime verification remains pending.
 

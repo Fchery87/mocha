@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "revision": 0,
+  "ui": {
+    "theme": "dark"
+  },
+  "default_mode": "auto",
+  "limits": {
+    "provider_steps": 50,
+    "tool_calls": 200,
+    "turn_seconds": 1800
+  }
+}

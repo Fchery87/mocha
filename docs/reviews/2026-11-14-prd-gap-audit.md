@@ -20,7 +20,7 @@ GAP-01's product behavior is now specified in the final mode matrix. GAP-02's pr
 
 Exact provider/model endpoint fixtures, the bundled metadata snapshot, SIWC registration/account eligibility, the selected dependency graph, actual static linkage, benchmark repeatability, and OS containment/durability evidence were already explicitly pending. They block associated support/release claims. They are not evidence that a written requirement is missing.
 
-Exact versioned protocol payload schemas and later slice specifications are also planned artifacts. They must exist and be reviewed before the affected implementation. Only SLICE-001 currently has a concrete slice specification. This repository is ready to begin bounded M0 work with GAP-03's cancellation contract included in that design, rather than ready to implement every M1/M2 detail without further specification.
+At the initial audit, versioned payload schemas and SLICE-002 through SLICE-019 specifications were absent. The [final slice review](2026-11-14-final-slice-review.md) subsequently supplied all 19 local specs and concrete boundary schemas. Their implementation, verifier construction and external feasibility gates remain pending; local documentation cannot establish runtime release readiness.
 
 ## Verification limits
 

@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mocha trusted MCP server config v1",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "servers": {
+      "type": "object",
+      "maxProperties": 100,
+      "propertyNames": {
+        "pattern": "^[A-Za-z0-9_-]{1,80}$"
+      },
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "transport": {
+                "const": "stdio"
+              },
+              "command": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "args": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 4096
+                },
+                "maxItems": 128
+              },
+              "cwd": {
+                "type": "string",
+                "maxLength": 4096
+              }
+            },
+            "required": [
+              "transport",
+              "command",
+              "args"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "transport": {
+                "const": "http"
+              },
+              "url": {
+                "type": "string",
+                "pattern": "^https://[^@#]+$",
+                "maxLength": 4096
+              },
+              "authProfileRef": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_-]{1,80}$"
+              },
+              "protocol_revision": {
+                "enum": [
+                  "2026-07-28",
+                  "2025-11-25"
+                ]
+              }
+            },
+            "required": [
+              "transport",
+              "url",
+              "protocol_revision"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "servers"
+  ],
+  "additionalProperties": false,
+  "$id": "https://mocha.invalid/contracts/mcp-config.schema.json"
+}

@@ -1,0 +1,1 @@
+{"schema_version":1,"session_id":"session-fixture","sequence":1,"timestamp":"2026-11-14T12:00:00Z","type":"header","payload":{"workspace":"/fixture/workspace","created_at":"2026-11-14T12:00:00Z","mock":true},"checksum":"463f08cd"}

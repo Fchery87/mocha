@@ -93,3 +93,12 @@ M1 reads instructions as untrusted guidance and executes no repository config or
 Instruction precedence is explicit user instruction, global guidance, then applicable repository guidance with nearest-file scope resolving local conflicts. At each directory AGENTS.md takes precedence over CLAUDE.md. Limit each file to 64 KiB and combined active guidance to 256 KiB. Report overflow. Reject instruction symlinks that escape the workspace. Reload changed applicable guidance before the next affected operation. Batch operations retain each path's scope. Instructions cannot grant permissions.
 
 Tool/file/MCP content taints the session. Preserve taint through compaction and resume. Model-proposed outbound actions in a tainted session require approval unless an exact authorized rule applies. Configured provider inference remains a separate host operation. Test the real enforcement path rather than trusting a model's stated refusal.
+
+
+## Capture and job limits
+
+Basic redacted output capture/spill is a SLICE-005 prerequisite. Per command, capture at most 64 MiB combined stdout/stderr by default, streamed to private storage rather than retained in RAM. The display remains capped at 32 KiB or 500 lines. At the capture ceiling stop the command using the normal bounded termination path, mark output_truncated=true and output_limit, and retain captured bytes plus a discarded-byte count where observable. Never report truncated evidence as complete success. Storage failure follows the stricter existing durability/unknown-effect policy.
+
+Permit at most four live background jobs and four independently safe concurrent reads per engine by default. Additional jobs return job_limit before spawning. Mutations remain coordinated. A background job's command timeout and turn deadline continue while backgrounded; backgrounding does not reset them. Use logical job IDs and live ownership handles. After recovery never signal a numeric PID unless its process identity, ownership and authority are established; otherwise expose interrupted/unknown state and require reconciliation.
+
+Known-credential redaction marks original-byte coverage gaps in reads. The [boundary contract](boundary-payloads.md#tool-observations-and-results) prohibits placeholder-based rewrites and defines M1's explicit no-rewind result status. Trusted model rationale cannot repair missing read coverage.

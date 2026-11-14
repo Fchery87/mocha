@@ -1,14 +1,14 @@
 # Mocha documentation
 
-Current baseline: November 14, 2026. The repository is in specification work. Product choices from the interview are recorded. The maintainer confirmed the complete handoff on November 14, 2026. SLICE-001 is ready for implementation. No runtime, benchmark, account-access, or active-CI claim follows from these documents.
+Current baseline: November 14, 2026. The repository is in specification work. Product choices from the interview are recorded. The maintainer confirmed the complete handoff on November 14, 2026. SLICE-001 is ready for implementation. All 19 slices now have local specifications. No runtime, benchmark, account-access, or active-CI claim follows from these documents.
 
 ## Authority and reading order
 
-1. [PRD revision 4](02-prd.md) defines scope, requirements, accepted decisions, and release gates.
-2. [Architecture revision 6](04-architecture.md) defines ownership and delivery dependencies.
+1. [PRD revision 5](02-prd.md) defines scope, requirements, accepted decisions, and release gates.
+2. [Architecture revision 7](04-architecture.md) defines ownership and delivery dependencies.
 3. [Runtime](contracts/runtime.md), [tools and policy](contracts/tools-and-policy.md), [providers and MCP](contracts/providers-and-mcp.md), and [storage and context](contracts/storage-and-context.md) define shared engineering behavior.
 4. [Verification](verification.md) maps every requirement to evidence and fixes benchmark rules.
-5. [SLICE-001](slices/SLICE-001/spec.md) is the concrete first build specification. Later slices require detailed specs before their implementation.
+5. [The slice index](slices/README.md) links all 19 local specifications and their dependency graph. [SLICE-001](slices/SLICE-001/spec.md) begins the build.
 6. [UI design](../DESIGN.md) supplies current visual interactions within the PRD scope. [Feature roadmap](FEATURES.md) separates MVP from later ideas.
 
 The [glossary](../GLOSSARY.md) defines terms. [ADRs](adr/0001-bounded-local-recovery-storage.md) record costly tradeoffs. Research explains evidence and uncertainty; it cannot expand scope or override current contracts. Conflicts require updating the owning specification and affected references before implementation.
@@ -21,7 +21,7 @@ Retention is explicit, recovery coverage is bounded, history/checkpoints are pri
 
 The interview choices and delegated mode finalization are recorded. All five findings in the [semantic gap audit](reviews/2026-11-14-prd-gap-audit.md) now have specification closures. Canonical modes are auto, approve, plan and explicitly selected unattended. There is no cumulative token cap. Independent cancellation, the 30-second blocked-delivery timeout, shared-state coordination, and first-command prerequisites are specified. All affected runtime checks remain pending. No claim of universal completeness or a hiccup-free build follows from closing these findings.
 
-Remaining work includes later slice specifications and execution evidence: dependency/static-build resolution, performance calibration, actual containment/durability tests, adapter fixtures and usable model paths, early SIWC feasibility, and independently graded coding workflows. A failure blocks its dependent claim and requires repair or an explicit scope revision.
+The [final per-slice review](reviews/2026-11-14-final-slice-review.md) records engineering closures and the confirmed remote MCP OAuth choice. Remaining work includes ticketing and execution evidence: dependency/static-build resolution, performance calibration, actual containment/durability tests, adapter fixtures and usable model paths, early SIWC feasibility, and independently graded coding workflows. A failure blocks its dependent claim and requires repair or an explicit scope revision.
 
 ## Research provenance
 

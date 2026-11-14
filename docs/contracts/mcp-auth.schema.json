@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mocha MCP auth profile references v1; no credential values",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "profile_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{1,80}$"
+    },
+    "resource": {
+      "type": "string",
+      "pattern": "^https://[^@#]+$"
+    },
+    "method": {
+      "enum": [
+        "static",
+        "oauth"
+      ]
+    },
+    "envRef": {
+      "type": "string",
+      "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+    },
+    "keychainRef": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{1,80}$"
+    },
+    "issuer": {
+      "type": "string",
+      "pattern": "^https://[^@#]+$"
+    },
+    "client_id": {
+      "type": "string",
+      "maxLength": 4096
+    },
+    "registration": {
+      "enum": [
+        "preregistered",
+        "cimd",
+        "dcr"
+      ]
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "profile_id",
+    "resource",
+    "method"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "method": {
+            "const": "static"
+          }
+        }
+      },
+      "then": {
+        "oneOf": [
+          {
+            "required": [
+              "envRef"
+            ],
+            "not": {
+              "required": [
+                "keychainRef"
+              ]
+            }
+          },
+          {
+            "required": [
+              "keychainRef"
+            ],
+            "not": {
+              "required": [
+                "envRef"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "method": {
+            "const": "oauth"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "issuer",
+          "client_id",
+          "registration",
+          "keychainRef"
+        ],
+        "not": {
+          "required": [
+            "envRef"
+          ]
+        }
+      }
+    }
+  ],
+  "$id": "https://mocha.invalid/contracts/mcp-auth.schema.json"
+}
