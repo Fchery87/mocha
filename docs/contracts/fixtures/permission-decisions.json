@@ -1,0 +1,522 @@
+{
+  "schema_version": 1,
+  "status": "normative acceptance examples; application execution pending",
+  "modes": [
+    "auto",
+    "approve",
+    "plan",
+    "unattended"
+  ],
+  "cases": [
+    {
+      "id": "authorized-read-auto",
+      "mode": "auto",
+      "category": "authorized-read",
+      "facts": {
+        "mutating": false,
+        "scope_granted": true
+      },
+      "expected": "allow"
+    },
+    {
+      "id": "authorized-read-approve",
+      "mode": "approve",
+      "category": "authorized-read",
+      "facts": {
+        "mutating": false,
+        "scope_granted": true
+      },
+      "expected": "allow"
+    },
+    {
+      "id": "authorized-read-plan",
+      "mode": "plan",
+      "category": "authorized-read",
+      "facts": {
+        "mutating": false,
+        "scope_granted": true
+      },
+      "expected": "allow"
+    },
+    {
+      "id": "authorized-read-unattended",
+      "mode": "unattended",
+      "category": "authorized-read",
+      "facts": {
+        "mutating": false,
+        "scope_granted": true
+      },
+      "expected": "allow"
+    },
+    {
+      "id": "absolute-deny-auto",
+      "mode": "auto",
+      "category": "absolute-deny",
+      "facts": {
+        "absolute_deny": true,
+        "scope_granted": true,
+        "exact_action_grant": true
+      },
+      "expected": "block"
+    },
+    {
+      "id": "absolute-deny-approve",
+      "mode": "approve",
+      "category": "absolute-deny",
+      "facts": {
+        "absolute_deny": true,
+        "scope_granted": true,
+        "exact_action_grant": true
+      },
+      "expected": "block"
+    },
+    {
+      "id": "absolute-deny-plan",
+      "mode": "plan",
+      "category": "absolute-deny",
+      "facts": {
+        "absolute_deny": true,
+        "scope_granted": true,
+        "exact_action_grant": true
+      },
+      "expected": "block"
+    },
+    {
+      "id": "absolute-deny-unattended",
+      "mode": "unattended",
+      "category": "absolute-deny",
+      "facts": {
+        "absolute_deny": true,
+        "scope_granted": true,
+        "exact_action_grant": true
+      },
+      "expected": "block"
+    },
+    {
+      "id": "containment-unavailable-auto",
+      "mode": "auto",
+      "category": "containment-unavailable",
+      "facts": {
+        "required_containment_available": false,
+        "scope_granted": true
+      },
+      "expected": "block"
+    },
+    {
+      "id": "containment-unavailable-approve",
+      "mode": "approve",
+      "category": "containment-unavailable",
+      "facts": {
+        "required_containment_available": false,
+        "scope_granted": true
+      },
+      "expected": "block"
+    },
+    {
+      "id": "containment-unavailable-plan",
+      "mode": "plan",
+      "category": "containment-unavailable",
+      "facts": {
+        "required_containment_available": false,
+        "scope_granted": true
+      },
+      "expected": "block"
+    },
+    {
+      "id": "containment-unavailable-unattended",
+      "mode": "unattended",
+      "category": "containment-unavailable",
+      "facts": {
+        "required_containment_available": false,
+        "scope_granted": true
+      },
+      "expected": "block"
+    },
+    {
+      "id": "covered-edit-auto",
+      "mode": "auto",
+      "category": "covered-edit",
+      "facts": {
+        "mutating": true,
+        "scope_granted": true,
+        "checkpoint_ready": true,
+        "read_observation_current": true,
+        "exact_action_grant": false
+      },
+      "expected": "allow"
+    },
+    {
+      "id": "covered-edit-approve",
+      "mode": "approve",
+      "category": "covered-edit",
+      "facts": {
+        "mutating": true,
+        "scope_granted": true,
+        "checkpoint_ready": true,
+        "read_observation_current": true,
+        "exact_action_grant": false
+      },
+      "expected": "ask"
+    },
+    {
+      "id": "covered-edit-plan",
+      "mode": "plan",
+      "category": "covered-edit",
+      "facts": {
+        "mutating": true,
+        "scope_granted": true,
+        "checkpoint_ready": true,
+        "read_observation_current": true,
+        "exact_action_grant": false
+      },
+      "expected": "block"
+    },
+    {
+      "id": "covered-edit-unattended",
+      "mode": "unattended",
+      "category": "covered-edit",
+      "facts": {
+        "mutating": true,
+        "scope_granted": true,
+        "checkpoint_ready": true,
+        "read_observation_current": true,
+        "exact_action_grant": false
+      },
+      "expected": "allow"
+    },
+    {
+      "id": "local-mutating-command-auto",
+      "mode": "auto",
+      "category": "local-mutating-command",
+      "facts": {
+        "mutating": true,
+        "scope_granted": true,
+        "checkpoint_ready": true,
+        "exact_action_grant": false
+      },
+      "expected": "allow"
+    },
+    {
+      "id": "local-mutating-command-approve",
+      "mode": "approve",
+      "category": "local-mutating-command",
+      "facts": {
+        "mutating": true,
+        "scope_granted": true,
+        "checkpoint_ready": true,
+        "exact_action_grant": false
+      },
+      "expected": "ask"
+    },
+    {
+      "id": "local-mutating-command-plan",
+      "mode": "plan",
+      "category": "local-mutating-command",
+      "facts": {
+        "mutating": true,
+        "scope_granted": true,
+        "checkpoint_ready": true,
+        "exact_action_grant": false
+      },
+      "expected": "block"
+    },
+    {
+      "id": "local-mutating-command-unattended",
+      "mode": "unattended",
+      "category": "local-mutating-command",
+      "facts": {
+        "mutating": true,
+        "scope_granted": true,
+        "checkpoint_ready": true,
+        "exact_action_grant": false
+      },
+      "expected": "allow"
+    },
+    {
+      "id": "destructive-uncertainty-within-scope-auto",
+      "mode": "auto",
+      "category": "destructive-uncertainty-within-scope",
+      "facts": {
+        "mutating": true,
+        "scope_granted": true,
+        "checkpoint_ready": true,
+        "destructive_uncertainty": true,
+        "exact_action_grant": false
+      },
+      "expected": "reflect"
+    },
+    {
+      "id": "destructive-uncertainty-within-scope-approve",
+      "mode": "approve",
+      "category": "destructive-uncertainty-within-scope",
+      "facts": {
+        "mutating": true,
+        "scope_granted": true,
+        "checkpoint_ready": true,
+        "destructive_uncertainty": true,
+        "exact_action_grant": false
+      },
+      "expected": "ask"
+    },
+    {
+      "id": "destructive-uncertainty-within-scope-plan",
+      "mode": "plan",
+      "category": "destructive-uncertainty-within-scope",
+      "facts": {
+        "mutating": true,
+        "scope_granted": true,
+        "checkpoint_ready": true,
+        "destructive_uncertainty": true,
+        "exact_action_grant": false
+      },
+      "expected": "block"
+    },
+    {
+      "id": "destructive-uncertainty-within-scope-unattended",
+      "mode": "unattended",
+      "category": "destructive-uncertainty-within-scope",
+      "facts": {
+        "mutating": true,
+        "scope_granted": true,
+        "checkpoint_ready": true,
+        "destructive_uncertainty": true,
+        "exact_action_grant": false
+      },
+      "expected": "allow"
+    },
+    {
+      "id": "missing-execution-scope-auto",
+      "mode": "auto",
+      "category": "missing-execution-scope",
+      "facts": {
+        "mutating": true,
+        "scope_granted": false,
+        "model_justification_present": true
+      },
+      "expected": "ask"
+    },
+    {
+      "id": "missing-execution-scope-approve",
+      "mode": "approve",
+      "category": "missing-execution-scope",
+      "facts": {
+        "mutating": true,
+        "scope_granted": false,
+        "model_justification_present": true
+      },
+      "expected": "ask"
+    },
+    {
+      "id": "missing-execution-scope-plan",
+      "mode": "plan",
+      "category": "missing-execution-scope",
+      "facts": {
+        "mutating": true,
+        "scope_granted": false,
+        "model_justification_present": true
+      },
+      "expected": "block"
+    },
+    {
+      "id": "missing-execution-scope-unattended",
+      "mode": "unattended",
+      "category": "missing-execution-scope",
+      "facts": {
+        "mutating": true,
+        "scope_granted": false,
+        "model_justification_present": true
+      },
+      "expected": "stop_approval_required"
+    },
+    {
+      "id": "unknown-mcp-effects-auto",
+      "mode": "auto",
+      "category": "unknown-mcp-effects",
+      "facts": {
+        "scope_granted": true,
+        "unknown_mcp_effects": true,
+        "exact_action_grant": false
+      },
+      "expected": "ask"
+    },
+    {
+      "id": "unknown-mcp-effects-approve",
+      "mode": "approve",
+      "category": "unknown-mcp-effects",
+      "facts": {
+        "scope_granted": true,
+        "unknown_mcp_effects": true,
+        "exact_action_grant": false
+      },
+      "expected": "ask"
+    },
+    {
+      "id": "unknown-mcp-effects-plan",
+      "mode": "plan",
+      "category": "unknown-mcp-effects",
+      "facts": {
+        "scope_granted": true,
+        "unknown_mcp_effects": true,
+        "exact_action_grant": false
+      },
+      "expected": "block"
+    },
+    {
+      "id": "unknown-mcp-effects-unattended",
+      "mode": "unattended",
+      "category": "unknown-mcp-effects",
+      "facts": {
+        "scope_granted": true,
+        "unknown_mcp_effects": true,
+        "exact_action_grant": false
+      },
+      "expected": "stop_approval_required"
+    },
+    {
+      "id": "tainted-outbound-without-exact-grant-auto",
+      "mode": "auto",
+      "category": "tainted-outbound-without-exact-grant",
+      "facts": {
+        "tainted": true,
+        "outbound_tool_action": true,
+        "exact_action_grant": false,
+        "established_read_only": false
+      },
+      "expected": "ask"
+    },
+    {
+      "id": "tainted-outbound-without-exact-grant-approve",
+      "mode": "approve",
+      "category": "tainted-outbound-without-exact-grant",
+      "facts": {
+        "tainted": true,
+        "outbound_tool_action": true,
+        "exact_action_grant": false,
+        "established_read_only": false
+      },
+      "expected": "ask"
+    },
+    {
+      "id": "tainted-outbound-without-exact-grant-plan",
+      "mode": "plan",
+      "category": "tainted-outbound-without-exact-grant",
+      "facts": {
+        "tainted": true,
+        "outbound_tool_action": true,
+        "exact_action_grant": false,
+        "established_read_only": false
+      },
+      "expected": "block"
+    },
+    {
+      "id": "tainted-outbound-without-exact-grant-unattended",
+      "mode": "unattended",
+      "category": "tainted-outbound-without-exact-grant",
+      "facts": {
+        "tainted": true,
+        "outbound_tool_action": true,
+        "exact_action_grant": false,
+        "established_read_only": false
+      },
+      "expected": "stop_approval_required"
+    },
+    {
+      "id": "missing-required-checkpoint-auto",
+      "mode": "auto",
+      "category": "missing-required-checkpoint",
+      "facts": {
+        "mutating": true,
+        "scope_granted": true,
+        "checkpoint_required": true,
+        "checkpoint_ready": false
+      },
+      "expected": "block"
+    },
+    {
+      "id": "missing-required-checkpoint-approve",
+      "mode": "approve",
+      "category": "missing-required-checkpoint",
+      "facts": {
+        "mutating": true,
+        "scope_granted": true,
+        "checkpoint_required": true,
+        "checkpoint_ready": false
+      },
+      "expected": "block"
+    },
+    {
+      "id": "missing-required-checkpoint-plan",
+      "mode": "plan",
+      "category": "missing-required-checkpoint",
+      "facts": {
+        "mutating": true,
+        "scope_granted": true,
+        "checkpoint_required": true,
+        "checkpoint_ready": false
+      },
+      "expected": "block"
+    },
+    {
+      "id": "missing-required-checkpoint-unattended",
+      "mode": "unattended",
+      "category": "missing-required-checkpoint",
+      "facts": {
+        "mutating": true,
+        "scope_granted": true,
+        "checkpoint_required": true,
+        "checkpoint_ready": false
+      },
+      "expected": "block"
+    },
+    {
+      "id": "approve-exact-action-grant",
+      "mode": "approve",
+      "category": "exact-approved-covered-edit",
+      "facts": {
+        "mutating": true,
+        "scope_granted": true,
+        "checkpoint_ready": true,
+        "read_observation_current": true,
+        "exact_action_grant": true
+      },
+      "expected": "allow"
+    },
+    {
+      "id": "auto-reflection-cannot-enlarge-scope",
+      "mode": "auto",
+      "category": "reflection-retry-scope-escape",
+      "facts": {
+        "scope_granted": false,
+        "reflection_retry": true,
+        "model_justification_present": true,
+        "mutating": true
+      },
+      "expected": "ask"
+    },
+    {
+      "id": "auto-reflection-accepted-within-scope",
+      "mode": "auto",
+      "category": "reflection-retry-within-scope",
+      "facts": {
+        "scope_granted": true,
+        "reflection_retry": true,
+        "substantive_reflection": true,
+        "destructive_uncertainty": true,
+        "checkpoint_ready": true,
+        "required_checks_pass": true
+      },
+      "expected": "allow"
+    },
+    {
+      "id": "auto-unresolved-reflection",
+      "mode": "auto",
+      "category": "reflection-retry-scope-unresolved",
+      "facts": {
+        "reflection_retry": true,
+        "substantive_reflection": true,
+        "scope_established": false
+      },
+      "expected": "ask"
+    }
+  ]
+}

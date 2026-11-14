@@ -1,19 +1,10 @@
 # Mocha — DESIGN.md
 
-**Status:** v2, 2026-11-10. The source of truth for Mocha's terminal UI and UX.
+**Status:** visual reference reconciled November 14, 2026. [PRD](docs/02-prd.md) and [runtime contract](docs/contracts/runtime.md) govern scope and behavior. Visuals below describe intended components, not implemented screens.
 
-**Decided:**
-- The **Full** layout is the default. It's fullscreen and edge-to-edge, with the **Volt** palette and the **Cup** mark.
-- **Focus** is a toggle.
-- **Inline** mode is the fallback for people who want the terminal's native scrollback.
+Full with Volt is the default; inline is the fallback. Focus, agent command center, Lead mode, custom agents/skills, and model-generated summaries are future concepts. Sections 5, 6.2, and 6.3 and their shortcuts/settings do not enter the MVP. Extra palettes, advanced image protocols, arbitrary key remapping, and screen-reader mode are future enhancements unless separately specified. Dark/light, keyboard access, reduced motion, ASCII fallbacks, and NO_COLOR remain in scope.
 
-**Prototype:** branch `prototype/tui-variants`, variant A "Full" (`prototypes/tui-variants/src/full.rs`).
-
-**Related:**
-- `docs/FEATURES.md`: what Mocha does
-- `docs/research/2026-11-10-mocha-engineering-blueprint.md`: how it's built
-
----
+The previous prototype branch/path is not present in this checkout and is not build evidence. The [architecture](docs/04-architecture.md) defines the current implementation sequence.
 
 ## 1. Principles
 
@@ -25,7 +16,7 @@
    - neutrals for everything
    - the accent (**Volt** lime) for brand, focus, and "needs you"
    - teal and red only for success and failure
-4. **Use the whole screen, with purpose.** The top bar, bands, and diffs span the full width. Details sit next to what they describe, and only time and cost pin to the right edge. Wide screens gain a **rail** (plan, agents, changes, checkpoints) instead of empty space.
+4. **Use the whole screen, with purpose.** The top bar, bands, and diffs span the full width. Details sit next to what they describe, and only time and cost pin to the right edge. Wide screens gain a **rail** (current-session tasks, changes, checkpoints) instead of empty space.
 5. **Nothing that needs you can scroll away.** Approvals and questions dock above the composer until answered.
 6. **One signature: the pour.** A line under the top bar fills as a turn progresses, the spinner is a cup filling up, and the terminal's own progress bar mirrors both. Everything else is calm. Nothing moves when idle.
 7. **Quiet by default, detail on demand.** Everything collapses to one line and expands with a key. Nothing is hidden that can't be reached in one keystroke.
@@ -64,9 +55,9 @@
 ▌
  ▅ brewing  15s                                         ↓9.4k · $0.04 · 17s  esc stop   ← status
   ── band ──────────────────────────────────────────────────────────────────────────
-   › ask mocha anything · / commands · @ files                     opus-5.5 high · rip  ← composer
+   › ask mocha anything · / commands · @ files                     opus-5.5 high · auto  ← composer
   ──────────────────────────────────────────────────────────────────────────────────
- esc stop    ctrl+enter interject    shift+tab mode    alt+j agents    ? shortcuts      ← footer
+ esc stop    ctrl+enter interject    shift+tab mode    ? shortcuts      ← footer
 ```
 
 The `┌─ band ─┐` outlines above only mark where a band is. Bands have no borders on screen: they're a background tint.
@@ -198,15 +189,15 @@ Bold is for headings, your words in the transcript, verbs in tool rows, and keys
 ### 4.1 Top bar
 - **Left:** `◒ mocha  ~/code/api · main`
 - **Right:** `48k of 200k ██░░░░░░ 24%`. The meter cells turn `accent` as the context fills, and above 85% the percentage is bold `bad`.
-- When it matters, plan quota appears before the meter: `5h 82%`.
+- Show account quota only when the provider supplies a supported, verified value. Otherwise omit it.
 - It's always one row and never animates.
 
 ### 4.2 The pour (signature)
 A full-width line directly under the top bar:
 - **Idle:** a `line`-colored hairline that separates the bar from the transcript.
-- **Working:** it fills left to right in `accent` (`━`) to the turn's progress, and a short bright drop runs along the poured part.
-  - Progress = completed plan steps plus the current step's share.
-  - With no plan, it fills asymptotically by elapsed time and never reaches the end until the turn completes.
+- **Working:** show measured progress in `accent` when a total exists, otherwise a moving activity marker.
+  - Show a determinate ratio only for measured completed/total work.
+  - With no measured total, pulse in place without a completion percentage.
 - **Done:** it fills completely, holds for 400 ms, then fades back to the hairline.
 - **Failed:** the filled part turns `bad` for 400 ms.
 - **The terminal's own progress bar** mirrors it via OSC 9;4 (Ghostty, Windows Terminal, WezTerm, Konsole, and others; unsupported terminals ignore it). The state is cleared on exit.
@@ -257,7 +248,7 @@ When a turn finishes, one line closes it:
 - A failed turn uses `✗` in `bad`.
 
 ### 4.8 Dock (needs you)
-Appears **only** when a person must act: a tier-3 permission, a question from the agent, a background agent that's blocked, a plan to approve, or a quota decision. It sits between the transcript and the status line, and it can't scroll away.
+Appears **only** when a person must act: a tier-3 permission, a question from the agent, a plan to approve, or a required configuration decision. It sits between the transcript and the status line, and it can't scroll away.
 
 ```
 ▌
@@ -269,10 +260,10 @@ Appears **only** when a person must act: a tier-3 permission, a question from th
   - **Row 1:** what's being asked in bold, who's asking in `muted`, and *why it's tier 3* pinned right.
   - **Row 2:** the choices.
 - **Keys:** `1–9`, or `←/→` + `enter`. `d` shows the diff or the parsed command, and `e` asks the agent why.
-- **One request at a time.** Others queue, shown as `◆ 1 more waiting` on the status line, and the rail shows a `needs you` count.
+- **One request at a time.** Others queue, shown as `◆ 1 more waiting` on the status line, and the rail shows a `needs you` count for the current session.
 - **A question from the agent** uses the dock, with numbered options and an "other" option that focuses the composer.
 - **Plan approval** shows the plan's first lines with `enter approve · e edit · esc keep planning`.
-- Tiers 0–2 never produce a dock (see FEATURES §7).
+- Required approvals always use the dock, including sensitive or uncertain actions. Mode/tier decisions follow the tools-and-policy contract.
 - **Below 72 columns,** the choices stack vertically and the "why" moves to its own row.
 
 ### 4.9 Status line (while working)
@@ -287,7 +278,7 @@ Appears **only** when a person must act: a tier-3 permission, a question from th
 ### 4.10 Composer
 - It sits on the **same band as your sent messages**: a padding row, then `›` plus your input, then a padding row.
 - An accent `▌` edge appears while you type.
-- **Right side:** `opus-5.5 high · rip`. The mode is in `accent` and bold when it isn't `rip` (e.g. **careful**, **plan**).
+- **Right side:** `opus-5.5 high · auto`. The mode is in `accent` and bold when it isn't `auto` (e.g. **approve**, **plan**).
 - The placeholder is `ask mocha anything · / commands · @ files`.
 - Multi-line input grows to 8 rows, then scrolls.
 
@@ -295,10 +286,10 @@ Appears **only** when a person must act: a tier-3 permission, a question from th
 - `enter` sends · `shift+enter` / `ctrl+j` newline · `ctrl+g` opens `$EDITOR`
 - `@` file and folder mention with fuzzy completion · `/` commands · `!` runs a shell command yourself
 - **While Mocha works:**
-  - `enter` steers: the message is delivered after the current tool batch.
+  - `enter` queues the message for the next idle boundary.
   - `ctrl+enter` interjects now: the current step is interrupted.
   - `tab` queues the message as a follow-up instead.
-- Pasted images show as `[image 1]` chips. Large pastes collapse to `[pasted 240 lines]`.
+- `/attach <path>` shows a validated image attachment chip when the selected model supports images. Binary clipboard image import is later work. Large text pastes collapse to `[pasted 240 lines]`.
 - `↑` / `ctrl+r`: history and history search.
 
 ### 4.11 Footer
@@ -307,7 +298,7 @@ Key hints for **this moment**. The bold key comes first, then the `muted` action
 | State | Hints |
 |---|---|
 | Idle | `enter send` · `shift+tab mode` · `ctrl+r resume` · `? shortcuts` |
-| Working | `esc stop` · `ctrl+enter interject` · `shift+tab mode` · `alt+j agents` · `ctrl+z undo` · `? shortcuts` |
+| Working | `esc stop` · `ctrl+enter interject` · `shift+tab mode` · `ctrl+z undo` · `? shortcuts` |
 | Dock open | `1–3 choose` · `d diff` · `e explain` · `esc dismiss` |
 | Overlay | That overlay's own keys |
 
@@ -316,11 +307,11 @@ Hints drop from the right as the width shrinks (§8).
 ### 4.12 Rail (≥ 140 columns)
 A 36-column side panel that turns width into information. Sections appear only when they have content:
 - **Plan:** `2 of 4`, with steps marked `✓` / spinner / `○`
-- **Agents:** `●` needs you (accent) / `◐` working / `✓` done, each with a right-pinned state or age
+- **Tasks:** current-session todo items with pending, active, or done status. Multi-agent status is deferred.
 - **Changed:** files with `+a −d`
 - **Checkpoints:** the latest one, with `ctrl+z`
 
-Clicking an item opens it: a step, an agent, a file diff, or a checkpoint. `alt+r` toggles the rail at any width. Below 140 columns, its contents are reachable through `alt+j` (agents), `/diff`, and `/rewind`.
+Clicking or keyboard selection opens a current-session task, file diff, or checkpoint. `alt+r` toggles the rail at any width. Below 140 columns use transcript task groups, `/diff`, and `/rewind`. Agent sections remain deferred.
 
 ### 4.13 Errors and warnings
 - **A tool failure** is an action row with `✗` plus its short reason. The agent usually recovers, so it doesn't interrupt.
@@ -329,7 +320,7 @@ Clicking an item opens it: a step, an agent, a file diff, or a checkpoint. `alt+
 
 ---
 
-## 5. Focus mode (toggle)
+## 5. Focus mode (future concept)
 
 **What:** the same screen with everything except *now* turned down. Toggle with **`alt+f`** or `/focus`, and choose it as the default with `ui.focus = true`.
 
@@ -358,7 +349,7 @@ The empty session, shown on launch and after `/clear`. Centered in the transcrip
                   ████████████▀▄
                    ▀████████▀
                    mocha  v0.1.0
-          opus-5.5 high · rip · ~/code/api · main
+          opus-5.5 high · auto · ~/code/api · main
 
             ✓ AGENTS.md loaded · repo trusted
 
@@ -370,11 +361,11 @@ The empty session, shown on launch and after `/clear`. Centered in the transcrip
         / commands    @ files    shift+tab mode    ? keys
 ```
 - The cup's steam rises for 3 seconds.
-- The trust line reads `⚠ untrusted repo · AGENTS.md and hooks not loaded · /trust` when that's the case.
+- The trust line reads `⚠ untrusted repo · instructions are guidance only · /trust` when that's the case.
 - Recent sessions are this folder's, at most 3, and `↑` selects them.
 - Below 20 rows the cup is dropped. Below 50 columns the session titles are dropped.
 
-### 6.2 Agent command center (`alt+j`, `/agents`, `mocha agents`)
+### 6.2 Agent command center (future concept)
 A list grouped by what needs you:
 ```
   Agents                                   needs you 1 · working 2 · ready 1
@@ -393,7 +384,7 @@ A list grouped by what needs you:
 - Selecting a row opens that session.
 - Unread results stay bold until opened.
 
-### 6.3 Lead mode (`/lead`)
+### 6.3 Lead mode (future concept)
 - Your messages go to the lead.
 - Workers render in the rail (or pinned above the status line below 140 columns) as a task list:
   ```
@@ -418,29 +409,30 @@ A list grouped by what needs you:
 
 ### 6.6 Diff review (`/diff`, `d` from the dock)
 - All session changes, grouped by file, with full-width tinted rows.
-- Each hunk has its own `⟲` checkpoint, and `u` undoes a hunk.
+- `/rewind` or Ctrl+Z opens the checkpoint preview. Per-hunk undo is later work.
 
 ### 6.7 First run
-1. The welcome screen, with the cup and one sentence.
-2. "Sign in": Claude plan · ChatGPT plan · API key · local model · configure later.
-3. Theme check: dark or light is auto-detected, and a sample diff on the band confirms the colors are readable.
-4. The trust question for the current folder.
-5. Into the composer. No tour, and `?` is always there.
+
+1. Show the welcome screen and provider catalog.
+2. Connect an API key through protected entry or a named environment variable. Native ChatGPT sign-in is a separate M2 choice. Claude-plan login is excluded.
+3. Choose a coding model explicitly and optionally save it as the new-session default.
+4. Confirm readable dark/light colors and explain any project trust request. Declining trust leaves user configuration active.
+5. Open the composer. Configure-later leaves real inference unavailable with an actionable setup path.
 
 ---
 
-## 7. Keymap (defaults; all rebindable in `~/.mocha/keys.toml`)
+## 7. Keymap (MVP defaults; future-only bindings follow their feature scope)
 
 | Key | Action |
 |---|---|
-| `enter` / `shift+enter` | send (steer while working) / newline |
+| `enter` / `shift+enter` | Send, or queue while working / newline |
 | `ctrl+enter` | interject now (interrupt the current step and send) |
-| `esc` | stop the current turn · close an overlay · dismiss the dock (= "no") |
+| `esc` | Close focused overlay first; otherwise deny pending approval/question; otherwise cancel active turn |
 | `tab` | queue as a follow-up instead of steering |
-| `shift+tab` | cycle mode: rip → careful → plan |
+| `shift+tab` | cycle mode: auto → approve → plan; unattended requires explicit /mode selection |
 | `ctrl+o` | expand/collapse the latest group |
 | `ctrl+t` | transcript viewer and search |
-| `ctrl+z` | undo to the latest checkpoint (`/rewind` for older ones) |
+| `ctrl+z` | Preview the latest checkpoint; explicit confirmation restores (`/rewind` selects older points) |
 | `alt+f` | Focus mode |
 | `alt+j` | agent command center |
 | `alt+r` | toggle the rail |
@@ -448,7 +440,7 @@ A list grouped by what needs you:
 | `ctrl+r` | resume a session (idle) · history search (while typing) |
 | `pgup` / `pgdn`, wheel | scroll the transcript. `end` jumps back to the live edge. |
 | `ctrl+l` | redraw |
-| `ctrl+c` | stop. Twice on an empty composer exits. |
+| `ctrl+c` | Cancel active work and show a two-second quit hint; a second press in that window exits, regardless of composer content |
 | `?` | shortcuts sheet |
 | `1`–`9` | answer the dock |
 
@@ -589,12 +581,12 @@ Themes may override only the color tokens in §3.1, never layout, glyphs, or the
 - **vt100 end-to-end tests:** drive the real binary in a PTY and assert screen contents. Cases:
   - streaming
   - the dock flow
-  - Focus toggle
+  - Focus toggle when that later feature is specified
   - rail toggle
   - resize mid-stream
   - mouse scroll and selection
   - the exit receipt
-- **Perf tests:** a mock provider streaming at 200 tokens/s, with bytes per frame, repaint counts, and idle CPU asserted against §12.
+- **Perf tests:** a mock provider streaming at 200 eight-byte chunks/s, with bytes per frame, repaint counts, and idle CPU asserted against §12.
 - **Visual review:** throwaway explorations live on `prototype/*` branches, never on `main`. A winner is folded into real components and rewritten properly.
 
 ---
@@ -613,11 +605,18 @@ Themes may override only the color tokens in §3.1, never layout, glyphs, or the
 
 ---
 
-## 16. Open UI questions (to settle during M1)
+## 16. Resolved MVP interactions
 
-1. **Pour progress with no plan:** is elapsed-time asymptotic fill honest enough, or should it pulse in place instead? *Leaning: asymptotic, capped at 80% until done.*
-2. **Mouse selection:** is our own selection (OSC 52) plus `shift`+drag fallback good enough, or should mouse capture be off by default over SSH?
-3. **Rail in Focus mode:** hidden (current spec), or kept with only "needs you" items?
-4. **Inline parity:** which components must look identical in `ui.layout = "inline"`, and which may simplify (no rail, dock in the live area)?
-5. **Focus summaries of past turns:** written by the fast model, or generated from the event log? *Leaning: event log first, with a model summary only for the answer line.*
-6. **The shortcuts sheet layout** (`?`).
+Unknown progress pulses in place. Never infer completion percentage from elapsed time. Clear terminal progress/title indicators on completion, failure, cancellation, and exit. Reduced motion uses a stable activity marker.
+
+First run chooses provider, securely connects a key or environment reference, selects a coding model, and optionally saves a new-session default. Show connection, catalog, and account-access states separately. A session choice does not rewrite the saved default. Native ChatGPT connection is a separate M2 path. No mock output can appear as a real connected-provider response.
+
+Mouse capture defaults on locally. Users can disable it explicitly, including over SSH. Copy uses source blocks, not rendered gutters. OSC 52 is best effort; where acknowledgement is unavailable say "copy requested", not "copied". On unavailable/blocked clipboard support, offer a source-text viewer for terminal-native selection. Shift+drag remains a documented fallback where the terminal supports it.
+
+Inline preserves transcript, input, errors, approval/question choices, evidence, and cancellation. It omits the rail and fullscreen-only positioning. Approvals appear in the live area with the same authorization semantics. Fullscreen setup failure restores terminal state before fallback.
+
+Tab/Shift+Tab navigate within an open picker or dock, taking precedence over the composer queue action. Arrow keys move options; Enter chooses; Esc dismisses without authorizing. Transcript groups, diff review, and rail items have keyboard focus paths. Bare 1–9 answer only while the dock owns focus. The shortcuts sheet groups available navigation, input, session, and approval keys and hides deferred capabilities. Unsupported Ctrl+Enter uses Alt+Enter; built-in commands provide a path when terminals cannot deliver a shortcut.
+
+Focus mode and Focus summaries remain later work, so their rail and summary choices do not block the MVP. The MVP receipt comes from recorded evidence without a separate paid summarizer. Testing uses the verification plan's 200-chunk/second workload and fixed payload sizes.
+
+The canonical mode names and approval semantics follow the [policy matrix](docs/contracts/tools-and-policy.md#mode-decision-matrix). Unattended shows a persistent mode/scope indicator and returns to idle with an explanation when new approval is needed. It cannot open a waiting approval dock.

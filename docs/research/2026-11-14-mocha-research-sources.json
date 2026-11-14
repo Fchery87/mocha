@@ -1,0 +1,757 @@
+{
+  "research_cutoff": "2026-11-14",
+  "scope": "Primary sources read for the market and build-readiness synthesis. Unique requested URLs are normalized for a trailing slash and the OpenAI reasoning Markdown variant. This is not a snapshot archive.",
+  "search_accounting": {
+    "search_calls": 23,
+    "requested_result_slots": 137,
+    "by_workstream": {
+      "competitor": 33,
+      "safety": 25,
+      "interoperability": 35,
+      "evaluation_demand_toolchain_supply_chain": 44
+    },
+    "note": "Requested result slots are not unique sources read. Registry requests are separate from Exa search accounting."
+  },
+  "source_count": 101,
+  "date_limit": "Mutable sources establish observed documentation, not a complete historical snapshot. Dated publications and versioned specifications support the date-specific conclusions stated in the report.",
+  "sources": [
+    {
+      "url": "https://agentclientprotocol.com/announcements/acp-v2-draft",
+      "read_by": [
+        "interop",
+        "evaluation-demand-toolchain-release"
+      ],
+      "evidence_status": "dated_publication_or_update",
+      "date": "2026-07-20"
+    },
+    {
+      "url": "https://agentclientprotocol.com/llms.txt",
+      "read_by": [
+        "interop"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://agentclientprotocol.com/protocol/overview",
+      "read_by": [
+        "interop"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://agentclientprotocol.com/protocol/v2/initialization",
+      "read_by": [
+        "interop"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://agentclientprotocol.com/protocol/v2/migration",
+      "read_by": [
+        "interop"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://agentclientprotocol.com/protocol/v2/overview",
+      "read_by": [
+        "interop"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://agents.md/",
+      "read_by": [
+        "interop"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://aider.chat/docs/repomap.html",
+      "read_by": [
+        "market"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://aider.chat/docs/usage/lint-test.html",
+      "read_by": [
+        "market"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://aistudio.google.com/docs/thinking",
+      "read_by": [
+        "interop"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://aistudio.google.com/docs/thought-signatures",
+      "read_by": [
+        "interop"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://blog.rust-lang.org/2026/11/12/Rust-1.100.0/",
+      "read_by": [
+        "evaluation-demand-toolchain-release"
+      ],
+      "evidence_status": "dated_publication_or_update",
+      "date": "2026-11-12"
+    },
+    {
+      "url": "https://code.claude.com/docs/en/authentication",
+      "read_by": [
+        "market"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://code.claude.com/docs/en/checkpointing",
+      "read_by": [
+        "market",
+        "safety"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://code.claude.com/docs/en/headless",
+      "read_by": [
+        "market"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://code.claude.com/docs/en/permission-modes",
+      "read_by": [
+        "market"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://code.claude.com/docs/en/sandboxing",
+      "read_by": [
+        "safety"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://crates.io/api/v1/crates/cargo-deny/0.20.2",
+      "read_by": [
+        "dependency-verification"
+      ],
+      "evidence_status": "registry_metadata_not_build_proof"
+    },
+    {
+      "url": "https://crates.io/api/v1/crates/crossterm/0.29.0",
+      "read_by": [
+        "dependency-verification"
+      ],
+      "evidence_status": "registry_metadata_not_build_proof"
+    },
+    {
+      "url": "https://crates.io/api/v1/crates/grep-searcher/0.1.17",
+      "read_by": [
+        "dependency-verification"
+      ],
+      "evidence_status": "registry_metadata_not_build_proof"
+    },
+    {
+      "url": "https://crates.io/api/v1/crates/hyperfine/2.0.0",
+      "read_by": [
+        "dependency-verification"
+      ],
+      "evidence_status": "registry_metadata_not_build_proof"
+    },
+    {
+      "url": "https://crates.io/api/v1/crates/ignore/0.4.34",
+      "read_by": [
+        "dependency-verification"
+      ],
+      "evidence_status": "registry_metadata_not_build_proof"
+    },
+    {
+      "url": "https://crates.io/api/v1/crates/keyring/4.2.0",
+      "read_by": [
+        "dependency-verification"
+      ],
+      "evidence_status": "registry_metadata_not_build_proof"
+    },
+    {
+      "url": "https://crates.io/api/v1/crates/landlock/0.4.7",
+      "read_by": [
+        "dependency-verification"
+      ],
+      "evidence_status": "registry_metadata_not_build_proof"
+    },
+    {
+      "url": "https://crates.io/api/v1/crates/minisign/0.10.0",
+      "read_by": [
+        "dependency-verification"
+      ],
+      "evidence_status": "registry_metadata_not_build_proof"
+    },
+    {
+      "url": "https://crates.io/api/v1/crates/ratatui/0.30.2",
+      "read_by": [
+        "dependency-verification"
+      ],
+      "evidence_status": "registry_metadata_not_build_proof"
+    },
+    {
+      "url": "https://crates.io/api/v1/crates/reqwest/0.13.5",
+      "read_by": [
+        "dependency-verification"
+      ],
+      "evidence_status": "registry_metadata_not_build_proof"
+    },
+    {
+      "url": "https://crates.io/api/v1/crates/rmcp/3.9.0",
+      "read_by": [
+        "dependency-verification"
+      ],
+      "evidence_status": "registry_metadata_not_build_proof"
+    },
+    {
+      "url": "https://crates.io/api/v1/crates/seccompiler/0.5.0",
+      "read_by": [
+        "dependency-verification"
+      ],
+      "evidence_status": "registry_metadata_not_build_proof"
+    },
+    {
+      "url": "https://crates.io/api/v1/crates/serde/1.0.229",
+      "read_by": [
+        "dependency-verification"
+      ],
+      "evidence_status": "registry_metadata_not_build_proof"
+    },
+    {
+      "url": "https://crates.io/api/v1/crates/serde_json/1.0.154",
+      "read_by": [
+        "dependency-verification"
+      ],
+      "evidence_status": "registry_metadata_not_build_proof"
+    },
+    {
+      "url": "https://crates.io/api/v1/crates/similar/3.2.1",
+      "read_by": [
+        "dependency-verification"
+      ],
+      "evidence_status": "registry_metadata_not_build_proof"
+    },
+    {
+      "url": "https://crates.io/api/v1/crates/thiserror/2.0.21",
+      "read_by": [
+        "dependency-verification"
+      ],
+      "evidence_status": "registry_metadata_not_build_proof"
+    },
+    {
+      "url": "https://crates.io/api/v1/crates/tokio-util/0.7.20",
+      "read_by": [
+        "dependency-verification"
+      ],
+      "evidence_status": "registry_metadata_not_build_proof"
+    },
+    {
+      "url": "https://crates.io/api/v1/crates/tokio/1.54.1",
+      "read_by": [
+        "dependency-verification"
+      ],
+      "evidence_status": "registry_metadata_not_build_proof"
+    },
+    {
+      "url": "https://crates.io/api/v1/crates/toml",
+      "read_by": [
+        "dependency-verification"
+      ],
+      "evidence_status": "registry_metadata_not_build_proof"
+    },
+    {
+      "url": "https://crates.io/api/v1/crates/toml/1.2.1%2Bspec-1.1.0",
+      "read_by": [
+        "dependency-verification"
+      ],
+      "evidence_status": "registry_metadata_not_build_proof"
+    },
+    {
+      "url": "https://crates.io/api/v1/crates/tracing/0.1.44",
+      "read_by": [
+        "dependency-verification"
+      ],
+      "evidence_status": "registry_metadata_not_build_proof"
+    },
+    {
+      "url": "https://crates.io/api/v1/crates/tree-sitter-bash/0.25.1",
+      "read_by": [
+        "dependency-verification"
+      ],
+      "evidence_status": "registry_metadata_not_build_proof"
+    },
+    {
+      "url": "https://crates.io/api/v1/crates/tree-sitter/0.27.2",
+      "read_by": [
+        "dependency-verification"
+      ],
+      "evidence_status": "registry_metadata_not_build_proof"
+    },
+    {
+      "url": "https://crates.io/crates/reqwest/0.13.5",
+      "read_by": [
+        "evaluation-demand-toolchain-release"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://crates.io/crates/rmcp/3.9.0",
+      "read_by": [
+        "evaluation-demand-toolchain-release"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://developers.google.com/gemini-code-assist/docs/deprecations/code-assist-individuals",
+      "read_by": [
+        "market",
+        "evaluation-demand-toolchain-release"
+      ],
+      "evidence_status": "dated_publication_or_update",
+      "date": "2026-10-09"
+    },
+    {
+      "url": "https://developers.google.com/gemini-code-assist/docs/gemini-cli",
+      "read_by": [
+        "market"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://developers.googleblog.com/en/an-important-update-transitioning-gemini-cli-to-antigravity-cli/",
+      "read_by": [
+        "market",
+        "evaluation-demand-toolchain-release"
+      ],
+      "evidence_status": "dated_publication_or_update",
+      "date": "2026-05-19"
+    },
+    {
+      "url": "https://developers.openai.com/api/docs/guides/function-calling",
+      "read_by": [
+        "interop"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://developers.openai.com/api/docs/guides/reasoning",
+      "read_by": [
+        "interop"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://developers.openai.com/api/docs/guides/streaming-responses",
+      "read_by": [
+        "interop"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://developers.openai.com/codex/auth/",
+      "read_by": [
+        "interop"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://developers.openai.com/siwc/quickstart",
+      "read_by": [
+        "decision-interview-follow-up"
+      ],
+      "evidence_status": "observed_mutable_primary_source",
+      "note": "Official open-source ChatGPT integration; read on November 14 during the decision interview. Publication date not independently established; no live integration tested."
+    },
+    {
+      "url": "https://developers.openai.com/siwc/token-sharing-open-source/models-and-inference",
+      "read_by": [
+        "decision-interview-follow-up"
+      ],
+      "evidence_status": "observed_mutable_primary_source",
+      "note": "Official open-source ChatGPT integration; read on November 14 during the decision interview. Publication date not independently established; no live integration tested."
+    },
+    {
+      "url": "https://developers.openai.com/siwc/token-sharing-open-source/preview-limitations",
+      "read_by": [
+        "decision-interview-follow-up"
+      ],
+      "evidence_status": "observed_mutable_primary_source",
+      "note": "Official open-source ChatGPT integration; read on November 14 during the decision interview. Publication date not independently established; no live integration tested."
+    },
+    {
+      "url": "https://docs.github.com/en/actions/concepts/security/artifact-attestations",
+      "read_by": [
+        "evaluation-demand-toolchain-release"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://docs.kernel.org/userspace-api/landlock.html",
+      "read_by": [
+        "safety"
+      ],
+      "evidence_status": "observed_mutable_primary_source",
+      "note": "Mutable newer ABI material excluded from cutoff-specific kernel conclusions."
+    },
+    {
+      "url": "https://docs.rs/crate/ratatui/0.30.2",
+      "read_by": [
+        "evaluation-demand-toolchain-release"
+      ],
+      "evidence_status": "package_version_pinned_documentation"
+    },
+    {
+      "url": "https://docs.rs/crate/reqwest/0.13.5/features",
+      "read_by": [
+        "evaluation-demand-toolchain-release"
+      ],
+      "evidence_status": "package_version_pinned_documentation"
+    },
+    {
+      "url": "https://docs.rs/crate/rmcp/3.9.0",
+      "read_by": [
+        "evaluation-demand-toolchain-release"
+      ],
+      "evidence_status": "package_version_pinned_documentation"
+    },
+    {
+      "url": "https://docs.rs/reqwest/0.13.5/reqwest/",
+      "read_by": [
+        "evaluation-demand-toolchain-release"
+      ],
+      "evidence_status": "package_version_pinned_documentation"
+    },
+    {
+      "url": "https://docs.rs/rmcp/latest/rmcp/",
+      "read_by": [
+        "evaluation-demand-toolchain-release"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://docs.temporal.io/activity-definition",
+      "read_by": [
+        "safety"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://geminicli.com/docs/cli/sandbox/",
+      "read_by": [
+        "safety"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://geminicli.com/docs/cli/trusted-folders/",
+      "read_by": [
+        "safety"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://github.com/Aider-AI/aider",
+      "read_by": [
+        "market"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://github.com/agentclientprotocol/agent-client-protocol/",
+      "read_by": [
+        "interop",
+        "evaluation-demand-toolchain-release"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://github.com/anomalyco/models.dev",
+      "read_by": [
+        "decision-interview-follow-up"
+      ],
+      "evidence_status": "observed_mutable_primary_source",
+      "note": "Metadata source and exact license path read during the decision interview; snapshot/schema compatibility still requires implementation verification."
+    },
+    {
+      "url": "https://github.com/anomalyco/models.dev/blob/dev/LICENSE",
+      "read_by": [
+        "decision-interview-follow-up"
+      ],
+      "evidence_status": "observed_mutable_primary_source",
+      "note": "Metadata source and exact license path read during the decision interview; snapshot/schema compatibility still requires implementation verification."
+    },
+    {
+      "url": "https://github.com/anomalyco/opencode",
+      "read_by": [
+        "market"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://github.com/block/goose",
+      "read_by": [
+        "market"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://github.com/google-gemini/gemini-cli",
+      "read_by": [
+        "market"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://github.com/openai/codex",
+      "read_by": [
+        "market"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://github.com/openai/codex/blob/eaf81d3f/codex-rs/README.md",
+      "read_by": [
+        "market"
+      ],
+      "evidence_status": "commit_pinned_documentation",
+      "note": "Commit date was not independently verified."
+    },
+    {
+      "url": "https://github.com/sharkdp/hyperfine",
+      "read_by": [
+        "evaluation-demand-toolchain-release"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://labs.scale.com/blog/swe-bench-pro-v2",
+      "read_by": [
+        "evaluation-demand-toolchain-release"
+      ],
+      "evidence_status": "observed_mutable_primary_source",
+      "note": "Retrieved publication metadata and visible page date differ; no exact release-day assertion used."
+    },
+    {
+      "url": "https://man7.org/linux/man-pages/man2/fsync.2.html",
+      "read_by": [
+        "safety"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://metr.org/blog/2026-02-24-uplift-update/",
+      "read_by": [
+        "evaluation-demand-toolchain-release"
+      ],
+      "evidence_status": "dated_publication_or_update",
+      "date": "2026-02-24"
+    },
+    {
+      "url": "https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/security_best_practices",
+      "read_by": [
+        "safety"
+      ],
+      "evidence_status": "dated_protocol_revision",
+      "revision": "2026-07-28"
+    },
+    {
+      "url": "https://modelcontextprotocol.io/specification/2026-07-28/basic/lifecycle",
+      "read_by": [
+        "interop"
+      ],
+      "evidence_status": "dated_protocol_revision",
+      "revision": "2026-07-28"
+    },
+    {
+      "url": "https://modelcontextprotocol.io/specification/2026-07-28/changelog",
+      "read_by": [
+        "interop",
+        "evaluation-demand-toolchain-release"
+      ],
+      "evidence_status": "dated_protocol_revision",
+      "revision": "2026-07-28"
+    },
+    {
+      "url": "https://modelcontextprotocol.io/specification/2026-07-28/server/tools",
+      "read_by": [
+        "safety",
+        "interop"
+      ],
+      "evidence_status": "dated_protocol_revision",
+      "revision": "2026-07-28"
+    },
+    {
+      "url": "https://modelcontextprotocol.io/specification/versioning",
+      "read_by": [
+        "interop",
+        "evaluation-demand-toolchain-release"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://openai.com/index/running-codex-safely/",
+      "read_by": [
+        "safety"
+      ],
+      "evidence_status": "dated_publication_or_update",
+      "date": "2026-05-08"
+    },
+    {
+      "url": "https://openai.com/index/separating-signal-from-noise-coding-evaluations/",
+      "read_by": [
+        "evaluation-demand-toolchain-release"
+      ],
+      "evidence_status": "dated_publication_or_update",
+      "date": "2026-07-08"
+    },
+    {
+      "url": "https://opencode.ai/docs/cli/providers/",
+      "read_by": [
+        "market"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://pi.dev/docs/latest/how-pi-works",
+      "read_by": [
+        "market"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use",
+      "read_by": [
+        "interop"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-use-with-prompt-caching",
+      "read_by": [
+        "interop"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://platform.claude.com/docs/en/build-with-claude/extended-thinking",
+      "read_by": [
+        "interop"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://platform.claude.com/docs/en/build-with-claude/thinking",
+      "read_by": [
+        "interop"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://rust-secure-code.github.io/rust-supply-chain-security/build.html",
+      "read_by": [
+        "evaluation-demand-toolchain-release"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://stackoverflow.co/company/press/archive/stack-overflow-annual-developer-survey-ai-trust-conditional/",
+      "read_by": [
+        "evaluation-demand-toolchain-release"
+      ],
+      "evidence_status": "dated_publication_or_update",
+      "date": "2026-10-06"
+    },
+    {
+      "url": "https://survey.stackoverflow.co/2026/ai/data/ai-trust",
+      "read_by": [
+        "evaluation-demand-toolchain-release"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://survey.stackoverflow.co/2026/methodology",
+      "read_by": [
+        "evaluation-demand-toolchain-release"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://temporal.io/blog/idempotency-and-durable-execution",
+      "read_by": [
+        "safety"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
+      "read_by": [
+        "interop"
+      ],
+      "evidence_status": "dated_publication_or_update",
+      "date": "2025-09-29"
+    },
+    {
+      "url": "https://www.kernel.org/doc/html/v6.12/userspace-api/landlock.html",
+      "read_by": [
+        "safety"
+      ],
+      "evidence_status": "version_pinned_documentation",
+      "revision": "Linux v6.12"
+    },
+    {
+      "url": "https://www.tbench.ai/news/announcement-2-0",
+      "read_by": [
+        "evaluation-demand-toolchain-release"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://aistudio.google.com/docs/models",
+      "read_by": [
+        "docs-handoff-follow-up"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://aistudio.google.com/docs/migrate-to-interactions",
+      "read_by": [
+        "docs-handoff-follow-up"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://blog.google/innovation-and-ai/technology/developers-tools/interactions-api-general-availability/",
+      "read_by": [
+        "docs-handoff-follow-up"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://docs.x.ai/developers/rest-api-reference/inference/responses",
+      "read_by": [
+        "docs-handoff-follow-up"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    },
+    {
+      "url": "https://docs.z.ai/api-reference/introduction",
+      "read_by": [
+        "docs-handoff-follow-up"
+      ],
+      "evidence_status": "observed_mutable_primary_source"
+    }
+  ],
+  "follow_up_note": "The search accounting describes the original research pass. Additional decision-interview primary-source reads are recorded separately by read_by and do not change that historical search accounting."
+}

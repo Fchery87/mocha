@@ -1,5 +1,7 @@
 # Mocha — Engineering Blueprint
 
+> Historical proposal, superseded for build instructions by [the current architecture](../04-architecture.md) and [PRD](../02-prd.md). Daemon/crate layout, SQLite/storage, plaintext credential fallback, sandbox bypass/network defaults, performance comparisons, provider sequencing, and build milestones below are not current commitments. MVP uses an in-process engine, protected credential storage, bounded private-plaintext history/checkpoints, minimum containment before tools, and explicit benchmark calibration. No historical proposal is execution evidence.
+
 **Date:** 2026-11-10
 **Status:** Proposal for discussion (engineering only; TUI/UX is a later document)
 **Inputs:** Apex-Code review (`~/Documents/Coding Projects/apex-code`, `e2d2a99ff`), Jcode (`github.com/1jehuang/jcode`, README + `docs/` as of 2026-11-10), Apex's own landscape research (Claude Code, Codex CLI, Gemini CLI, OpenCode, Copilot CLI, Goose, Crush).

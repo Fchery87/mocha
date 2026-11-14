@@ -1,0 +1,208 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Fchery87/mocha/models.schema.json",
+  "title": "Mocha models configuration v1",
+  "description": "Missing limits are loadable but must be resolved before inference. Endpoint policy and duplicate identities also require semantic validation.",
+  "type": "object",
+  "required": [
+    "providers"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "providers": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "baseUrl",
+          "models"
+        ],
+        "properties": {
+          "baseUrl": {
+            "type": "string",
+            "pattern": "^https?://[^/?#@]+(?:/[^?#]*)?$"
+          },
+          "api": {
+            "enum": [
+              "anthropic-messages",
+              "openai-completions",
+              "openai-responses",
+              "google-gemini"
+            ]
+          },
+          "authHeader": {
+            "type": "boolean"
+          },
+          "keyEnv": {
+            "type": "string",
+            "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+          },
+          "models": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": [
+                "id"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "name": {
+                  "type": "string"
+                },
+                "api": {
+                  "enum": [
+                    "anthropic-messages",
+                    "openai-completions",
+                    "openai-responses",
+                    "google-gemini"
+                  ]
+                },
+                "contextWindow": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "maxTokens": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "reasoning": {
+                  "type": "boolean"
+                },
+                "input": {
+                  "type": "array",
+                  "items": {
+                    "enum": [
+                      "text",
+                      "image"
+                    ]
+                  },
+                  "uniqueItems": true
+                },
+                "cost": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "number",
+                    "minimum": 0
+                  }
+                },
+                "thinkingLevelMap": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "compat": {
+                  "type": "object",
+                  "properties": {
+                    "supportsStrictMode": {
+                      "type": "boolean"
+                    },
+                    "forceAdaptiveThinking": {
+                      "type": "boolean"
+                    },
+                    "supportsTemperature": {
+                      "type": "boolean"
+                    },
+                    "requiresReasoningContentOnAssistantMessages": {
+                      "type": "boolean"
+                    },
+                    "supportsDeveloperRole": {
+                      "type": "boolean"
+                    },
+                    "supportsStore": {
+                      "type": "boolean"
+                    },
+                    "maxTokensField": {
+                      "enum": [
+                        "max_tokens",
+                        "max_completion_tokens"
+                      ]
+                    },
+                    "thinkingFormat": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "additionalProperties": true,
+                  "propertyNames": {
+                    "not": {
+                      "enum": [
+                        "apiKey",
+                        "api_key",
+                        "token",
+                        "access_token",
+                        "refresh_token",
+                        "password",
+                        "headers",
+                        "authorization"
+                      ]
+                    }
+                  }
+                }
+              },
+              "additionalProperties": true,
+              "propertyNames": {
+                "not": {
+                  "enum": [
+                    "apiKey",
+                    "api_key",
+                    "token",
+                    "access_token",
+                    "refresh_token",
+                    "password",
+                    "headers",
+                    "authorization"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "anyOf": [
+          {
+            "required": [
+              "api"
+            ]
+          },
+          {
+            "properties": {
+              "models": {
+                "items": {
+                  "required": [
+                    "api"
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "additionalProperties": true,
+        "propertyNames": {
+          "not": {
+            "enum": [
+              "apiKey",
+              "api_key",
+              "token",
+              "access_token",
+              "refresh_token",
+              "password",
+              "headers",
+              "authorization"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}
